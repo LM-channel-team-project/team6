@@ -5,16 +5,16 @@ node_modules/
 *.tsbuildinfo
 
 # testing
-./client/coverage
+client/coverage
 
 
 # production
-./client/build
-./server/build
+client/build
+server/build
 
 # misc
-./client/.DS_Store
-./server/.DS_Store
+client/.DS_Store
+server/.DS_Store
 
 # Logs
 logs
@@ -30,18 +30,18 @@ yarn-error.log*
 
 # dotenv
 ## client
-./client/.env
-./client/.env.local
-./client/.env.development.local
-./client/.env.production.local
-./client/.env.test.local
+client/.env
+client/.env.local
+client/.env.development.local
+client/.env.production.local
+client/.env.test.local
 
 ## server
-./server/.env
-./server/.env.local
-./server/.env.development.local
-./server/.env.production.local
-./server/.env.test.local
+server/.env
+server/.env.local
+server/.env.development.local
+server/.env.production.local
+server/.env.test.local
 
 # cache
 .cache
@@ -49,4 +49,4 @@ yarn-error.log*
 
 # pnp files
 .client/.pnp
-./client.pnp.js
+client.pnp.js
