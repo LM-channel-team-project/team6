@@ -1,55 +1,74 @@
+import "reflect-metadata";
+import { createConnection } from "typeorm";
 import express, { NextFunction, Request, Response } from "express";
-import morgan from 'morgan';
-import path from 'path';
-import cors from 'cors';
-import createError, { HttpError } from 'http-errors';
+import morgan from "morgan";
+import path from "path";
+import cors from "cors";
+import session from "express-session";
+import passport from "passport";
+import cookieParser from "cookie-parser";
+import { HttpError } from "http-errors";
 import dotenv from "dotenv";
+import router from "./route";
+import { customStatus, customMessage, customError, jsonResponse } from "./module";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT|| 8000;
+const port = process.env.PORT || 5000;
 
 app.use(
-    (req: Request, res: Response, next: NextFunction) => {
-        if (process.env.NODE_ENV === 'production') {
-            morgan('combined')(req, res, next);
-        } else {
-            morgan('dev')(req, res, next);
-        }
+  (req: Request, res: Response, next: NextFunction) => {
+    if (process.env.NODE_ENV === "production") {
+      morgan("combined")(req, res, next);
+    } else {
+      morgan("dev")(req, res, next);
+    }
+  },
+  express.static(path.join(__dirname, "src/public")),
+  express.json(),
+  express.urlencoded({ extended: false }),
+  cookieParser(process.env.COOKIE_SECRET),
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET || "default",
+    cookie: {
+      httpOnly: true,
+      secure: false,
     },
-    express.static(path.join(__dirname, 'src/public')),
-    express.json(),
-    express.urlencoded({ extended: false }),
-    cors({
-        origin:
-            process.env.NODE_ENV === 'production'
-            ? process.env.CLIENT_PRODUCTION
-            : process.env.CLIENT_DEVELOPMENT
-    }),
+  }),
+  passport.initialize(),
+  passport.session(),
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_PRODUCTION
+        : process.env.CLIENT_DEVELOPMENT,
+  }),
 );
 
+createConnection()
+  .then(() => {
+    console.log("Database Connected :) ");
+  })
+  .catch((err) => console.log(err));
+
 // router
-app.use("/", (req: Request, res: Response, next: NextFunction) => {
-    res.send("<h1>Team 6</h1>"); // 임시
-});
+app.use("/api", router);
 
 // error handling
 app.use((req: Request, res: Response, next: NextFunction) => {
-    const error = createError();
-    error.statusCode = 404;
-    error.message = "NOT_FOUND";
-    next(error);
+  const error = new customError(customStatus.NOT_FOUND, customMessage.NOT_FOUND);
+  next(error);
 });
 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-    const statusCode = err.statusCode || 500;
-    const message = err.message || "INTERNAL_SERVER_ERROR";
-    res.json({
-        statusCode: statusCode,
-        message: message
-    })
+  const statusCode = err.status || customStatus.INTERNAL_SERVER_ERROR;
+  const statusMessage = err.message || customMessage.INTERNAL_SERVER_ERROR;
+
+  res.status(statusCode).json(jsonResponse(statusCode, statusMessage));
 });
 
 app.listen(port, () => {
-    console.log(`server ${port} on`)
+  console.log(`Server listening on : ${port}`);
 });
