@@ -50,3 +50,6 @@ server/.env.test.local
 # pnp files
 .client/.pnp
 client.pnp.js
+
+# server test
+server/src/test/*.test.ts
