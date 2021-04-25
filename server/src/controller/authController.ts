@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
 
-import { customStatus, customMessage, customError, jsonResponse } from "../module";
+import { customStatus, customMessage, customError, jsonResponse } from "../util";
 
 import { User } from "../entity/User";
 

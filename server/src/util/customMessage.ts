@@ -41,6 +41,9 @@ export default {
   USER_FIND_ONE_SUCCESS: "회원 조회 성공",
   USER_FIND_ONE_FAIL: "회원 조회 실패",
 
+  USER_NOT_AUTHENTICATED: "접근하기 위해서는 로그인이 필요합니다.",
+  USER_AUTHENTICATED: "이미 로그인되어 있습니다.",
+
   // 포스트 관련
   POST_FIND_ALL_SUCCESS: "전체 글 조회 성공",
   POST_FIND_SUCCESS: "글 조회 성공",

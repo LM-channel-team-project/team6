@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Post } from "../entity/Post";
 import { getRepository } from "typeorm";
 
-import { customStatus, customMessage, customError, jsonResponse } from "../module";
+import { customStatus, customMessage, customError, jsonResponse } from "../util";
 
 // 조회
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {

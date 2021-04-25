@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
+
 import express, { NextFunction, Request, Response } from "express";
+import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import cors from "cors";
@@ -8,9 +10,10 @@ import session from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import { HttpError } from "http-errors";
-import dotenv from "dotenv";
+
 import router from "./route";
-import { customStatus, customMessage, customError, jsonResponse } from "./module";
+import { customStatus, customMessage, customError, jsonResponse } from "./util";
+
 dotenv.config();
 
 const app = express();
@@ -47,11 +50,12 @@ app.use(
   }),
 );
 
-createConnection()
-  .then(() => {
-    console.log("Database Connected :) ");
-  })
-  .catch((err) => console.log(err));
+// DB Connection
+// createConnection()
+//   .then(() => {
+//     console.log("Database Connected :) ");
+//   })
+//   .catch((err) => console.log(err));
 
 // router
 app.use("/api", router);
@@ -69,6 +73,10 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   res.status(statusCode).json(jsonResponse(statusCode, statusMessage));
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on : ${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`Server listening on : ${port}`);
+  });
+}
+
+export default app;
