@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
+    background-color: #F8FAFB;
   }
   ul, ol {
     list-style: none;
