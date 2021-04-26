@@ -6,11 +6,12 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import cors from "cors";
+import { HttpError } from "http-errors";
 import session from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
-import { HttpError } from "http-errors";
 
+import passportConfig from "./util/passport.config";
 import router from "./route";
 import { customStatus, customMessage, customError, jsonResponse } from "./util";
 
@@ -45,17 +46,18 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? process.env.CLIENT_PRODUCTION
-        : process.env.CLIENT_DEVELOPMENT,
+        ? process.env.CLIENT_URL_PRODUCTION
+        : process.env.CLIENT_URL_DEVELOPMENT,
   }),
 );
+passportConfig();
 
 // DB Connection
-// createConnection()
-//   .then(() => {
-//     console.log("Database Connected :) ");
-//   })
-//   .catch((err) => console.log(err));
+createConnection()
+  .then(() => {
+    console.log("Database Connected :) ");
+  })
+  .catch((err) => console.log(err));
 
 // router
 app.use("/api", router);

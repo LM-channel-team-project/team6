@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { customStatus, customMessage, customError } from "../util";
 
-const isLogin = (req: Request, res: Response, next: NextFunction) => {
+const isLogined = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     next();
   } else {
@@ -10,7 +10,7 @@ const isLogin = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const isNotLogin = (req: Request, res: Response, next: NextFunction) => {
+const isNotLogined = (req: Request, res: Response, next: NextFunction) => {
   if (!req.isAuthenticated()) {
     next();
   } else {
@@ -19,4 +19,4 @@ const isNotLogin = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { isLogin, isNotLogin };
+export { isLogined, isNotLogined };
