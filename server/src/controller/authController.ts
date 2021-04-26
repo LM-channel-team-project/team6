@@ -1,50 +1,44 @@
 import { NextFunction, Request, Response } from "express";
-import { getRepository } from "typeorm";
-
 import { customStatus, customMessage, customError, jsonResponse } from "../util";
-
+import { getRepository } from "typeorm";
 import { User } from "../entity/User";
+import bcrypt from "bcrypt";
 
-// 모든 유저 조회
-export const findAll = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const users = await getRepository(User).find();
+/*
+  URL: /api/auth
+  User
+    id: number;
+    nickname: string;
+    username: string;
+    email: string;
+    password: string;
+    oauthId: string;
+    provider: string;
+*/
 
-    if (!users) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.USER_FIND_ALL_FAIL);
-    }
-    res
-      .status(customStatus.OK)
-      .json(jsonResponse(customStatus.OK, customMessage.USER_FIND_ALL_SUCCESS, users));
-  } catch (err) {
-    next(err);
-  }
+// passport callbacks
+export const Callbacks = async (req: Request, res: Response, next: NextFunction) => {
+  res.status(customStatus.OK).json(jsonResponse(customStatus.OK, customMessage.USER_LOGIN_SUCCESS));
 };
 
-// 특정 유저 조회
-export const findOne = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = await getRepository(User).findOne(req.params.id);
-
-    if (!user) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.USER_FIND_ONE_FAIL);
-    }
-    res
-      .status(customStatus.OK)
-      .json(jsonResponse(customStatus.OK, customMessage.USER_FIND_ONE_SUCCESS, user));
-  } catch (err) {
-    next(err);
-  }
-};
-
+// signUp, Logout
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = getRepository(User).create(req.body);
+  const { nickname, username, email, password } = req.body;
 
-    if (!user) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.USER_SIGNUP_FAIL);
+  try {
+    const user = await getRepository(User).findOne({ where: { email } });
+    if (user) {
+      throw new customError(customStatus.BAD_REQUEST, customMessage.USER_ALREADY_USED_EMAIL);
     }
-    const result = await getRepository(User).save(user);
+    const hash = await bcrypt.hash(password, 12);
+
+    const result = await getRepository(User).save({
+      email,
+      nickname,
+      username,
+      password: hash,
+    });
+
     res
       .status(customStatus.OK)
       .json(jsonResponse(customStatus.CREATED, customMessage.USER_SIGNUP_SUCCESS, result));
@@ -53,9 +47,15 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   }
 };
 
+export const logOut = (req: Request, res: Response, next: NextFunction) => {
+  req.logOut();
+  res.redirect(`${process.env.SERVER_URL_DEVELOPMENT}/api/auth`);
+};
+
+// User Update, Delete
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await getRepository(User).findOne(req.params.id);
+    const user = await getRepository(User).findOne({ where: { id: req.params.id } });
 
     if (!user) {
       throw new customError(customStatus.NOT_FOUND, customMessage.NOT_FOUND);
@@ -78,9 +78,41 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     if (!result) {
       throw new customError(customStatus.NOT_FOUND, customMessage.USER_WITHDRAW_FAIL);
     }
+    req.logOut();
     res
       .status(customStatus.OK)
       .json(jsonResponse(customStatus.OK, customMessage.USER_WITHDRAW_SUCCESS, result));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// findA
+export const findAll = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await getRepository(User).find();
+
+    if (!users) {
+      throw new customError(customStatus.NOT_FOUND, customMessage.USER_FIND_ALL_FAIL);
+    }
+    res
+      .status(customStatus.OK)
+      .json(jsonResponse(customStatus.OK, customMessage.USER_FIND_ALL_SUCCESS, users));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const findOne = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await getRepository(User).findOne(req.params.id);
+
+    if (!user) {
+      throw new customError(customStatus.NOT_FOUND, customMessage.USER_FIND_ONE_FAIL);
+    }
+    res
+      .status(customStatus.OK)
+      .json(jsonResponse(customStatus.OK, customMessage.USER_FIND_ONE_SUCCESS, user));
   } catch (err) {
     next(err);
   }
