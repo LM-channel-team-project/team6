@@ -48,7 +48,7 @@ const kakaoVerify = async (
         provider: provider,
       });
 
-      getRepository(User).save(newUser);
+      await getRepository(User).save(newUser);
 
       done(null, newUser);
     }

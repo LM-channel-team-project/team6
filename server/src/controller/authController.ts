@@ -49,7 +49,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 
 export const logOut = (req: Request, res: Response, next: NextFunction) => {
   req.logOut();
-  res.redirect(`${process.env.SERVER_DEVELOPMENT}/api/auth`);
+  res.redirect(`${process.env.SERVER_URL_DEVELOPMENT}/api/auth`);
 };
 
 // User Update, Delete
