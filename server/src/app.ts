@@ -1,37 +1,34 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
+import { createConnection, getConnection } from "typeorm";
 
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import cors from "cors";
-import { HttpError } from "http-errors";
+import http from "http";
 import session from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 
-import passportConfig from "./util/passport.config";
-import router from "./route";
-import { customStatus, customMessage, customError, jsonResponse } from "./util";
+import { error404, errorHandler } from "./utils/errorHandler";
+import passportConfig from "./utils/passport.config";
+import router from "./routes";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+// app configuration
 app.use(
-  (req: Request, res: Response, next: NextFunction) => {
-    if (process.env.NODE_ENV === "production") {
-      morgan("combined")(req, res, next);
-    } else {
-      morgan("dev")(req, res, next);
-    }
-  },
-  express.static(path.join(__dirname, "src/public")),
-  express.json(),
-  express.urlencoded({ extended: false }),
-  cookieParser(process.env.COOKIE_SECRET),
+  process.env.NODE_ENV === "production" ? morgan("combined") : morgan("dev"),
+);
+app.use(express.static(path.join(__dirname, "src/public")));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
   session({
     resave: false,
     saveUninitialized: false,
@@ -41,8 +38,10 @@ app.use(
       secure: false,
     },
   }),
-  passport.initialize(),
-  passport.session(),
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
@@ -50,35 +49,44 @@ app.use(
         : process.env.CLIENT_URL_DEVELOPMENT,
   }),
 );
+
+// possport configuation
 passportConfig();
 
-// DB Connection
-createConnection()
-  .then(() => {
-    console.log("Database Connected :) ");
-  })
-  .catch((err) => console.log(err));
+// router settings
+app.use("/api/v1", router); // v1
 
-// router
-app.use("/api", router);
+// error handlers
+app.use(error404);
+app.use(errorHandler);
 
-// error handling
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const error = new customError(customStatus.NOT_FOUND, customMessage.NOT_FOUND);
-  next(error);
-});
+// server run/stop function
+const stopServer = async (server: http.Server, err?: string) => {
+  // database disconnection for safety
+  const connection = getConnection();
+  await connection.close();
 
-app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-  const statusCode = err.status || customStatus.INTERNAL_SERVER_ERROR;
-  const statusMessage = err.message || customMessage.INTERNAL_SERVER_ERROR;
+  // server close
+  server.close();
+  process.exit();
+};
 
-  res.status(statusCode).json(jsonResponse(statusCode, statusMessage));
-});
+const runServer = async () => {
+  // classify test mode
+  if (process.env.NODE_ENV === "test") return;
 
-if (process.env.NODE_ENV !== "test") {
-  app.listen(port, () => {
-    console.log(`Server listening on : ${port}`);
+  // server on
+  const server = app.listen(port, () => {
+    console.log(`>> server on | Port: ${port}`);
   });
-}
 
-export default app;
+  try {
+    // database connection
+    const connection = await createConnection();
+    console.log(`>> database connected | DB Type: ${process.env.DB_TYPE}`);
+  } catch (err) {
+    stopServer(server, err);
+  }
+};
+
+runServer();

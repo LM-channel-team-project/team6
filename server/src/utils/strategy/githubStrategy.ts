@@ -1,24 +1,27 @@
-import { Strategy as githubStrategy } from "passport-github";
 import dotenv from "dotenv";
+import { Strategy as githubStrategy } from "passport-github";
+
 import { getRepository } from "typeorm";
-import { User } from "../../entity/User";
-import { use } from "passport";
+import { User } from "../../models/entity/User";
 
 dotenv.config();
 
 type VerifyCallback = (error: any, user?: any, info?: any) => void;
 
+// server domain
 const serverDomain =
   process.env.NODE_ENV === "production"
     ? process.env.SERVER_URL_PRODUCTION
     : process.env.SERVER_URL_DEVELOPMENT;
 
+// github oauth configuration
 const githubConfig = {
   clientID: process.env.GITHUB_CLIENT_ID || "default",
   clientSecret: process.env.GITHUB_CLIENT_SECRET || "default",
-  callbackURL: `${serverDomain}/api/auth/oauth/github/callback`,
+  callbackURL: `${serverDomain}/api/v1/auth/oauth/github/callback`,
 };
 
+// github oauth verify function
 const githubVerify = async (
   accessToken: string,
   refreshToken: string,
@@ -33,7 +36,9 @@ const githubVerify = async (
   } = profile;
 
   try {
-    const user = await getRepository(User).findOne({ where: { oauthId: id, provider: "github" } });
+    const user = await getRepository(User).findOne({
+      where: { oauthId: id, provider: "github" },
+    });
 
     if (user) {
       done(null, user);

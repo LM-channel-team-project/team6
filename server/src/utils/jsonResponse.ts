@@ -4,7 +4,12 @@ interface APIResponse {
   data?: any;
 }
 
-const jsonResponse = (statusCode: number, statusMessage: string, data?: any): APIResponse => {
+// JSON Response: status, message, result-data
+const jsonResponse = (
+  statusCode: number,
+  statusMessage: string,
+  data?: any,
+): APIResponse => {
   return {
     status: statusCode,
     message: statusMessage,
