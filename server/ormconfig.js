@@ -1,7 +1,5 @@
 const baseURL = process.env.NODE_ENV === "production" ? "build" : "src";
 
-console.log(baseURL);
-
 export default {
   type: process.env.DB_TYPE,
   host: process.env.DB_HOST,

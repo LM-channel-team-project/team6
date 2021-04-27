@@ -1,5 +1,6 @@
-import { Strategy as kakaoStrategy } from "passport-kakao";
 import dotenv from "dotenv";
+import { Strategy as kakaoStrategy } from "passport-kakao";
+
 import { getRepository } from "typeorm";
 import { User } from "../../models/entity/User";
 
@@ -7,17 +8,20 @@ dotenv.config();
 
 type VerifyCallback = (error: any, user?: any, info?: any) => void;
 
+// server domain
 const serverDomain =
   process.env.NODE_ENV === "production"
     ? process.env.SERVER_URL_PRODUCTION
     : process.env.SERVER_URL_DEVELOPMENT;
 
+// kakao oauth configuration
 const kakaoConfig = {
   clientID: process.env.KAKAO_CLIENT_ID || "default",
   clientSecret: process.env.KAKAO_CLIENT_SECRET || "default",
-  callbackURL: `${serverDomain}/api/auth/oauth/kakao/callback`,
+  callbackURL: `${serverDomain}/api/v1/auth/oauth/kakao/callback`,
 };
 
+// kakao oauth verify function
 const kakaoVerify = async (
   accessToken: string,
   refreshToken: string,
@@ -34,7 +38,9 @@ const kakaoVerify = async (
   } = profile;
 
   try {
-    const user = await getRepository(User).findOne({ where: { oauthId: id, provider: "kakao" } });
+    const user = await getRepository(User).findOne({
+      where: { oauthId: id, provider: "kakao" },
+    });
 
     if (user) {
       done(null, user);

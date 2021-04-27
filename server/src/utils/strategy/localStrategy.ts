@@ -9,7 +9,12 @@ dotenv.config();
 
 type VerifyCallback = (error: any, user?: any, info?: any) => void;
 
-const localVerify = async (email: string, password: string, done: VerifyCallback) => {
+// local verify function
+const localVerify = async (
+  email: string,
+  password: string,
+  done: VerifyCallback,
+) => {
   try {
     const user = await getRepository(User).findOne({ where: { email } });
 

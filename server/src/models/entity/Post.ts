@@ -33,7 +33,10 @@ export class Post {
   views: number;
 
   // User(1) <-> Post(*)
-  @ManyToOne((type) => User, (user) => user.posts, { nullable: false, onDelete: "CASCADE" })
+  @ManyToOne((type) => User, (user) => user.posts, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   user: User;
 
   // Post(1) <-> Comment(*)

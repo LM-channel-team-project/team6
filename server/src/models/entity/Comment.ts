@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+} from "typeorm";
 import { Post } from "./Post";
 import { User } from "./User";
 
@@ -17,10 +23,16 @@ export class Comment {
   hits: number;
 
   // Post(1) <-> Comment(*)
-  @ManyToOne((type) => Post, (post) => post.comments, { nullable: false, onDelete: "CASCADE" })
+  @ManyToOne((type) => Post, (post) => post.comments, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   post: Post;
 
   // User(1) <-> Comment(*)
-  @ManyToOne((type) => User, (user) => user.comments, { nullable: false, onDelete: "CASCADE" })
+  @ManyToOne((type) => User, (user) => user.comments, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   user: User;
 }
