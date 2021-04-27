@@ -52,4 +52,5 @@ server/.env.test.local
 client.pnp.js
 
 # server test
-server/src/test/*.test.ts
+server/src/tests/*.test.ts
+server/*.sqlite
