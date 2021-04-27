@@ -4,7 +4,7 @@ import kakaoStrategy from "./strategy/kakaoStrategy";
 import githubStrategy from "./strategy/githubStrategy";
 
 import { getRepository } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "../models/entity/User";
 
 const passportInit = () => {
   passport.serializeUser((user: any, done: (error: any, user?: any, info?: any) => void) => {

@@ -1,9 +1,9 @@
 import { Strategy as localStrategy } from "passport-local";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import { customMessage } from "../../util";
+import { customMessage } from "../";
 import { getRepository } from "typeorm";
-import { User } from "../../entity/User";
+import { User } from "../../models/entity/User";
 
 dotenv.config();
 

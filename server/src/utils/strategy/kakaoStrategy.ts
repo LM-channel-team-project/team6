@@ -1,8 +1,7 @@
-import { Strategy as githubStrategy } from "passport-github";
+import { Strategy as kakaoStrategy } from "passport-kakao";
 import dotenv from "dotenv";
 import { getRepository } from "typeorm";
-import { User } from "../../entity/User";
-import { use } from "passport";
+import { User } from "../../models/entity/User";
 
 dotenv.config();
 
@@ -13,13 +12,13 @@ const serverDomain =
     ? process.env.SERVER_URL_PRODUCTION
     : process.env.SERVER_URL_DEVELOPMENT;
 
-const githubConfig = {
-  clientID: process.env.GITHUB_CLIENT_ID || "default",
-  clientSecret: process.env.GITHUB_CLIENT_SECRET || "default",
-  callbackURL: `${serverDomain}/api/auth/oauth/github/callback`,
+const kakaoConfig = {
+  clientID: process.env.KAKAO_CLIENT_ID || "default",
+  clientSecret: process.env.KAKAO_CLIENT_SECRET || "default",
+  callbackURL: `${serverDomain}/api/auth/oauth/kakao/callback`,
 };
 
-const githubVerify = async (
+const kakaoVerify = async (
   accessToken: string,
   refreshToken: string,
   profile: any,
@@ -27,21 +26,23 @@ const githubVerify = async (
 ) => {
   const {
     provider,
-    displayName,
+    id,
     username,
-    _json: { id, email },
+    _json: {
+      kakao_account: { email },
+    },
   } = profile;
 
   try {
-    const user = await getRepository(User).findOne({ where: { oauthId: id, provider: "github" } });
+    const user = await getRepository(User).findOne({ where: { oauthId: id, provider: "kakao" } });
 
     if (user) {
       done(null, user);
     } else {
       const newUser = getRepository(User).create({
         email,
-        nickname: displayName,
         password: accessToken,
+        nickname: username,
         username: username,
         oauthId: id,
         provider: provider,
@@ -56,6 +57,6 @@ const githubVerify = async (
   }
 };
 
-const strategy = new githubStrategy(githubConfig, githubVerify);
+const strategy = new kakaoStrategy(kakaoConfig, kakaoVerify);
 
 export default strategy;

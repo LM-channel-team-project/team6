@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { customStatus, customMessage, customError } from "../util";
+import { customStatus, customMessage, customError } from "../utils";
 
 const isLogined = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { customStatus, customMessage, customError, jsonResponse } from "../util";
+import { customStatus, customMessage, customError, jsonResponse } from "../utils";
 import { getRepository } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "../models/entity/User";
 import bcrypt from "bcrypt";
 
 /*

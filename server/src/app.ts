@@ -11,9 +11,9 @@ import session from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 
-import passportConfig from "./util/passport.config";
-import router from "./route";
-import { customStatus, customMessage, customError, jsonResponse } from "./util";
+import passportConfig from "./utils/passport.config";
+import router from "./routes";
+import { customStatus, customMessage, customError, jsonResponse } from "./utils";
 
 dotenv.config();
 
