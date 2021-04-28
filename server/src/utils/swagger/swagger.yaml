@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  version: 0.1.0
+  title: Team 6 Express API with Swagger
+  description: This is a API application made with Express and documented with Swagger
+  license:
+    name: MIT
+servers:
+  - description: Development Server URL
+    url: http://localhost:8000/api
+  - description: Production Server URL
+    url: http://localhost:3000/api
+tags:
+  - name: Auth
+  - name: Post
+paths:
+  $ref: "./paths/v1/index.yaml"
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    Post:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+  responses:
+    BadRequest:
+      description: 잘못된 요청
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 400
+            message: 잘못된 요청
+    InternalServerError:
+      description: 서버 에러
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 500
+            message: 서버 내부 오류
+    DBError:
+      description: 데이터베이스 에러
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 600
+            message: 데이터베이스 에러

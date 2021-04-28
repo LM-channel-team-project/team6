@@ -1,0 +1,87 @@
+get:
+  summary: "특정 유저 정보 조회"
+  tags:
+    - Auth
+  parameters:
+    - in: path
+      name: id
+      description: user id
+      type: integer
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              message:
+                type: string
+              data:
+                type: object
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+    500:
+      $ref: "../../../swagger.yaml#/components/responses/InternalServerError"
+    600:
+      $ref: "../../../swagger.yaml#/components/responses/DBError"
+put:
+  summary: "유저 정보 수정"
+  tags:
+    - Auth
+  parameters:
+    - in: path
+      name: id
+      description: user id
+      type: integer
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              message:
+                type: string
+              data:
+                type: object
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+    500:
+      $ref: "../../../swagger.yaml#/components/responses/InternalServerError"
+    600:
+      $ref: "../../../swagger.yaml#/components/responses/DBError"
+delete:
+  summary: "유저 회원 탈퇴"
+  tags:
+    - Auth
+  parameters:
+    - in: path
+      name: id
+      description: user id
+      type: integer
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              message:
+                type: string
+              data:
+                type: object
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+    500:
+      $ref: "../../../swagger.yaml#/components/responses/InternalServerError"
+    600:
+      $ref: "../../../swagger.yaml#/components/responses/DBError"

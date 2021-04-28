@@ -1,0 +1,22 @@
+get:
+  summary: "깃허브 소셜 로그인"
+  tags:
+    - Auth
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              message:
+                type: string
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+    500:
+      $ref: "../../../swagger.yaml#/components/responses/InternalServerError"
+    600:
+      $ref: "../../../swagger.yaml#/components/responses/DBError"

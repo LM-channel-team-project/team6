@@ -1,8 +1,10 @@
+import "module-alias/register";
 import "reflect-metadata";
-import { createConnection, getConnection } from "typeorm";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 import express from "express";
-import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
 import cors from "cors";
@@ -10,15 +12,17 @@ import http from "http";
 import session from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import { createConnection, getConnection } from "typeorm";
+import swaggerUi from "swagger-ui-express";
+import Yaml from "yamljs";
 
-import { error404, errorHandler } from "./utils/errorHandler";
-import passportConfig from "./utils/passport.config";
-import router from "./routes";
-
-dotenv.config();
+import router from "@routes/index";
+import passportConfig from "@utils/passport.config";
+import { error404, errorHandler } from "@utils/errorHandler";
 
 const app = express();
 const port = process.env.PORT || 5000;
+const swaggerDocs = Yaml.load(path.join(__dirname, "../build/swagger.yaml"));
 
 // app configuration
 app.use(
@@ -55,6 +59,7 @@ passportConfig();
 
 // router settings
 app.use("/api/v1", router); // v1
+app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // error handlers
 app.use(error404);
@@ -72,7 +77,7 @@ const stopServer = async (server: http.Server, err?: string) => {
 };
 
 const runServer = async () => {
-  // classify test mode
+  // test mode
   if (process.env.NODE_ENV === "test") return;
 
   // server on

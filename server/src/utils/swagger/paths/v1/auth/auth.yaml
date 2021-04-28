@@ -1,0 +1,24 @@
+get:
+  summary: "유저 정보 리스트 조회"
+  tags:
+    - Auth
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              message:
+                type: string
+              data:
+                type: object
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+    500:
+      $ref: "../../../swagger.yaml#/components/responses/InternalServerError"
+    600:
+      $ref: "../../../swagger.yaml#/components/responses/DBError"
