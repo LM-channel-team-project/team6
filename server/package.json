@@ -19,6 +19,7 @@
     "@types/passport-kakao": "^0.2.0",
     "@types/passport-local": "^1.0.33",
     "@types/supertest": "^2.0.11",
+    "@types/swagger-ui-express": "^4.1.2",
     "@types/winston": "^2.4.4",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
@@ -38,6 +39,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "http-errors": "^1.8.0",
+    "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
@@ -45,15 +47,26 @@
     "passport-kakao": "^1.0.1",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.10",
+    "swagger-cli": "^4.0.4",
+    "swagger-ui-express": "^4.1.6",
     "typeorm": "0.2.32",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.2"
   },
   "scripts": {
+    "prebuild": "tsc -b --clean",
     "build": "tsc",
-    "start:dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/app.ts",
-    "start:prod": "yarn build && cross-env NODE_ENV=production ts-node build/app.js",
+    "docs": "swagger-cli bundle ./src/utils/swagger/swagger.yaml --outfile build/swagger.yaml --type yaml",
+    "start:dev": "yarn build && yarn docs && cross-env NODE_ENV=development nodemon --exec ts-node src/app.ts",
+    "start:prod": "yarn build && yarn docs && cross-env NODE_ENV=production ts-node build/app.js",
     "test": "cross-env NODE_ENV=test && jest --detectOpenHandles --forceExit"
+  },
+  "_moduleAliases": {
+    "@controllers": "build/controllers",
+    "@middlewares": "build/middlewares",
+    "@models": "build/models",
+    "@routes": "build/routes",
+    "@utils": "build/utils"
   },
   "jest": {
     "transform": {

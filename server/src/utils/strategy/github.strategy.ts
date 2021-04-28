@@ -1,28 +1,24 @@
-import dotenv from "dotenv";
-import { Strategy as kakaoStrategy } from "passport-kakao";
-
+import { Strategy as githubStrategy } from "passport-github";
 import { getRepository } from "typeorm";
-import { User } from "../../models/entity/User";
-
-dotenv.config();
+import { User } from "@models/entity/User";
 
 type VerifyCallback = (error: any, user?: any, info?: any) => void;
 
-// server domain
-const serverDomain =
+// server URL
+const serverURL =
   process.env.NODE_ENV === "production"
     ? process.env.SERVER_URL_PRODUCTION
     : process.env.SERVER_URL_DEVELOPMENT;
 
-// kakao oauth configuration
-const kakaoConfig = {
-  clientID: process.env.KAKAO_CLIENT_ID || "default",
-  clientSecret: process.env.KAKAO_CLIENT_SECRET || "default",
-  callbackURL: `${serverDomain}/api/v1/auth/oauth/kakao/callback`,
+// github oauth configuration
+const githubConfig = {
+  clientID: process.env.GITHUB_CLIENT_ID || "default",
+  clientSecret: process.env.GITHUB_CLIENT_SECRET || "default",
+  callbackURL: `${serverURL}/api/v1/auth/oauth/github/callback`,
 };
 
-// kakao oauth verify function
-const kakaoVerify = async (
+// github oauth verify function
+const githubVerify = async (
   accessToken: string,
   refreshToken: string,
   profile: any,
@@ -30,16 +26,14 @@ const kakaoVerify = async (
 ) => {
   const {
     provider,
-    id,
+    displayName,
     username,
-    _json: {
-      kakao_account: { email },
-    },
+    _json: { id, email },
   } = profile;
 
   try {
     const user = await getRepository(User).findOne({
-      where: { oauthId: id, provider: "kakao" },
+      where: { oauthId: id, provider: "github" },
     });
 
     if (user) {
@@ -47,8 +41,8 @@ const kakaoVerify = async (
     } else {
       const newUser = getRepository(User).create({
         email,
+        nickname: displayName,
         password: accessToken,
-        nickname: username,
         username: username,
         oauthId: id,
         provider: provider,
@@ -63,6 +57,6 @@ const kakaoVerify = async (
   }
 };
 
-const strategy = new kakaoStrategy(kakaoConfig, kakaoVerify);
+const strategy = new githubStrategy(githubConfig, githubVerify);
 
 export default strategy;

@@ -1,13 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  customStatus,
-  customMessage,
-  customError,
-  jsonResponse,
-} from "../../utils";
+import * as custom from "@utils/custom";
 
 import { getRepository } from "typeorm";
-import { Post } from "../../models/entity/Post";
+import { Post } from "@models/entity/Post";
 
 // findAll Posts
 export const findAll = async (
@@ -19,20 +14,20 @@ export const findAll = async (
     const posts = await getRepository(Post).find({ relations: ["user"] });
 
     if (!posts) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.POST_FIND_ALL_FAIL,
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_FIND_ALL_FAIL,
       );
     }
 
     console.log(req.sessionID);
 
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(
-          customStatus.OK,
-          customMessage.POST_FIND_ALL_SUCCESS,
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.POST_FIND_ALL_SUCCESS,
           posts,
         ),
       );
@@ -53,13 +48,20 @@ export const findOne = async (
     });
 
     if (!post) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.POST_NO_IDX);
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_NO_IDX,
+      );
     }
 
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(customStatus.OK, customMessage.POST_FIND_SUCCESS, post),
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.POST_FIND_SUCCESS,
+          post,
+        ),
       );
   } catch (err) {
     next(err);
@@ -80,26 +82,26 @@ export const createPost = async (
     post.user = req.body.userId;
 
     if (!post) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.POST_CREATE_FAIL,
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_CREATE_FAIL,
       );
     }
 
     const result = await getRepository(Post).save(post);
     if (!result) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.POST_CREATE_FAIL,
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_CREATE_FAIL,
       );
     }
 
     res
-      .status(customStatus.CREATED)
+      .status(custom.status.CREATED)
       .json(
-        jsonResponse(
-          customStatus.CREATED,
-          customMessage.POST_CREATE_SUCCESS,
+        custom.JSONResponse(
+          custom.status.CREATED,
+          custom.message.POST_CREATE_SUCCESS,
           result,
         ),
       );
@@ -118,20 +120,30 @@ export const updatePost = async (
     const post = await getRepository(Post).findOne(req.params.id);
 
     if (!post) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.POST_NO_IDX);
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_NO_IDX,
+      );
     }
 
     getRepository(Post).merge(post, req.body);
     const result = await getRepository(Post).save(post);
 
     if (!result) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.POST_NO_IDX);
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_NO_IDX,
+      );
     }
 
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(customStatus.OK, customMessage.POST_FIND_SUCCESS, result),
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.POST_FIND_SUCCESS,
+          result,
+        ),
       );
   } catch (err) {
     next(err);
@@ -148,21 +160,29 @@ export const deletePost = async (
     const post = await getRepository(Post).findOne(req.params.id);
 
     if (!post) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.POST_NO_IDX);
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_NO_IDX,
+      );
     }
 
     const result = await getRepository(Post).delete(req.params.id);
 
     if (!result) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.POST_DELETE_FAIL,
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.POST_DELETE_FAIL,
       );
     }
 
     res
-      .status(customStatus.OK)
-      .json(jsonResponse(customStatus.OK, customMessage.POST_DELETE_SUCCESS));
+      .status(custom.status.OK)
+      .json(
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.POST_DELETE_SUCCESS,
+        ),
+      );
   } catch (err) {
     next(err);
   }
