@@ -56,7 +56,7 @@ export const createUser = async (
     });
 
     res
-      .status(custom.status.OK)
+      .status(custom.status.CREATED)
       .json(
         custom.JSONResponse(
           custom.status.CREATED,

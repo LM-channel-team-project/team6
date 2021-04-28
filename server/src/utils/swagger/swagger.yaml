@@ -6,13 +6,13 @@ info:
   license:
     name: MIT
 servers:
-  - description: Development Server URL
-    url: http://localhost:8000/api
-  - description: Production Server URL
-    url: http://localhost:3000/api
+  - url: http://localhost:8000/api
+    description: Development Server URL
+  # - url: http://localhost:3000/api
+  #   description: Production Server URL
 tags:
   - name: Auth
-  - name: Post
+  # - name: Post
 paths:
   $ref: "./paths/v1/index.yaml"
 components:
@@ -21,11 +21,35 @@ components:
       type: object
       required:
         - id
+        - email
+        - password
       properties:
         id:
           type: number
-        name:
+          example: 1
+        nickname:
           type: string
+          description: 유저 닉네임
+          example: 팀6
+        username:
+          type: string
+          description: 유저 이름
+          example: 홍길동
+        email:
+          type: string
+          description: 유저 이메일 (Unique)
+          example: admin@gmail.com
+        password:
+          type: string
+          description: 유저 비밀번호
+          example: qwer1234
+        oauthId:
+          type: string
+          description: 소설 로그인 Oauth id 값 (nullable)
+        provider:
+          type: string
+          description: 소셜 로그인 제공자 (default local)
+          example: local
     Post:
       type: object
       required:
@@ -33,8 +57,57 @@ components:
       properties:
         id:
           type: number
+          example: 1
+        title:
+          type: string
+          description: 글 제목
+          example: Team 6 블로그에 오신 것을 환영합니다.
+        content:
+          type: string
+          description: 글 내용
+          example: Team 6 Post.
+        createdAt:
+          type: string
+          description: 글 생성일자
+        hits:
+          type: number
+          description: 글 좋아요 수
+          example: 100
+        views:
+          type: number
+          description: 글 뷰어 수
+          example: 100
+    Comment:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: number
+          example: 1
+        content:
+          type: string
+          description: 댓글 내용
+          example: Team 6 Comment.
+        createdAt:
+          type: string
+          description: 댓글 생성일자
+        hits:
+          type: number
+          description: 댓글 좋아요 수
+          example: 100
+    HashTag:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: number
+          example: 1
         name:
           type: string
+          description: 해시태그 이름
+          example: python
     Error:
       type: object
       properties:

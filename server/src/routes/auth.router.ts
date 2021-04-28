@@ -36,7 +36,7 @@ router.get(
 
 // - User Update, User Delete, Find One User
 router.get("/:id", isAuthenticated, AuthController.findOne);
-router.put("/:id", isAuthenticated, AuthController.updateUser);
+router.patch("/:id", isAuthenticated, AuthController.updateUser);
 router.delete("/:id", isAuthenticated, AuthController.deleteUser);
 
 // Local
