@@ -6,6 +6,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   body {
+    max-width: 1440px;
+    margin: auto;
+    min-height: 100vh;
+    border: 3px solid tomato;
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
     background-color: #F8FAFB;
