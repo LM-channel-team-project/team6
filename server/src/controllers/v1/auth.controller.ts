@@ -1,14 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  customStatus,
-  customMessage,
-  customError,
-  jsonResponse,
-} from "../../utils";
+import * as custom from "@utils/custom";
 import bcrypt from "bcrypt";
 
 import { getRepository } from "typeorm";
-import { User } from "../../models/entity/User";
+import { User } from "@models/entity/User";
 
 /*
   URL: /api/v1/auth
@@ -29,8 +24,10 @@ export const callbacks = async (
   next: NextFunction,
 ) => {
   res
-    .status(customStatus.OK)
-    .json(jsonResponse(customStatus.OK, customMessage.USER_LOGIN_SUCCESS));
+    .status(custom.status.OK)
+    .json(
+      custom.JSONResponse(custom.status.OK, custom.message.USER_LOGIN_SUCCESS),
+    );
 };
 
 // - signUp
@@ -44,9 +41,9 @@ export const createUser = async (
   try {
     const user = await getRepository(User).findOne({ where: { email } });
     if (user) {
-      throw new customError(
-        customStatus.BAD_REQUEST,
-        customMessage.USER_ALREADY_USED_EMAIL,
+      throw new custom.CustomError(
+        custom.status.BAD_REQUEST,
+        custom.message.USER_ALREADY_USED_EMAIL,
       );
     }
     const hash = await bcrypt.hash(password, 12);
@@ -59,11 +56,11 @@ export const createUser = async (
     });
 
     res
-      .status(customStatus.OK)
+      .status(custom.status.CREATED)
       .json(
-        jsonResponse(
-          customStatus.CREATED,
-          customMessage.USER_SIGNUP_SUCCESS,
+        custom.JSONResponse(
+          custom.status.CREATED,
+          custom.message.USER_SIGNUP_SUCCESS,
           result,
         ),
       );
@@ -75,7 +72,7 @@ export const createUser = async (
 // Logout
 export const logOut = (req: Request, res: Response, next: NextFunction) => {
   req.logOut();
-  res.redirect(`${process.env.SERVER_URL_DEVELOPMENT}/api/auth`);
+  res.redirect(`${process.env.SERVER_URL_DEVELOPMENT}/api/v1/auth`);
 };
 
 // User Update
@@ -90,17 +87,20 @@ export const updateUser = async (
     });
 
     if (!user) {
-      throw new customError(customStatus.NOT_FOUND, customMessage.NOT_FOUND);
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.USER_LOGIN_FIND_USER_FAIL,
+      );
     }
 
     getRepository(User).merge(user, req.body);
     const result = await getRepository(User).save(user);
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(
-          customStatus.OK,
-          customMessage.USER_CHANGE_NICKNAME_SUCCESS,
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.USER_CHANGE_NICKNAME_SUCCESS,
           result,
         ),
       );
@@ -119,18 +119,18 @@ export const deleteUser = async (
     const result = await getRepository(User).delete(req.params.id);
 
     if (!result) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.USER_WITHDRAW_FAIL,
+      throw new custom.CustomError(
+        custom.status.BAD_REQUEST,
+        custom.message.USER_WITHDRAW_FAIL,
       );
     }
     req.logOut();
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(
-          customStatus.OK,
-          customMessage.USER_WITHDRAW_SUCCESS,
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.USER_WITHDRAW_SUCCESS,
           result,
         ),
       );
@@ -149,17 +149,17 @@ export const findAll = async (
     const users = await getRepository(User).find();
 
     if (!users) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.USER_FIND_ALL_FAIL,
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.USER_FIND_ALL_FAIL,
       );
     }
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(
-          customStatus.OK,
-          customMessage.USER_FIND_ALL_SUCCESS,
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.USER_FIND_ALL_SUCCESS,
           users,
         ),
       );
@@ -178,17 +178,17 @@ export const findOne = async (
     const user = await getRepository(User).findOne(req.params.id);
 
     if (!user) {
-      throw new customError(
-        customStatus.NOT_FOUND,
-        customMessage.USER_FIND_ONE_FAIL,
+      throw new custom.CustomError(
+        custom.status.NOT_FOUND,
+        custom.message.USER_FIND_ONE_FAIL,
       );
     }
     res
-      .status(customStatus.OK)
+      .status(custom.status.OK)
       .json(
-        jsonResponse(
-          customStatus.OK,
-          customMessage.USER_FIND_ONE_SUCCESS,
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.USER_FIND_ONE_SUCCESS,
           user,
         ),
       );

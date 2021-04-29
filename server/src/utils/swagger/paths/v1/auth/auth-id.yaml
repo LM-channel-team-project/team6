@@ -1,0 +1,93 @@
+get:
+  summary: "특정 유저 정보 조회"
+  tags:
+    - Auth
+  parameters:
+    - in: path
+      name: id
+      description: 조회할 유저 ID
+      type: integer
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 회원 조회 성공
+              data:
+                type: object
+                schema:
+                  $ref: "../../../swagger.yaml#/components/schemas/User"
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+    500:
+      $ref: "../../../swagger.yaml#/components/responses/InternalServerError"
+    600:
+      $ref: "../../../swagger.yaml#/components/responses/DBError"
+patch:
+  summary: "유저 정보 수정"
+  tags:
+    - Auth
+  parameters:
+    - in: path
+      name: id
+      description: 수정할 유저 ID
+      type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../../swagger.yaml#/components/schemas/User"
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 회원 수정 성공
+              data:
+                type: object
+                schema:
+                  $ref: "../../../swagger.yaml#/components/schemas/User"
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"
+delete:
+  summary: "유저 회원 탈퇴"
+  tags:
+    - Auth
+  parameters:
+    - in: path
+      name: id
+      description: 삭제할 유저 ID
+      type: integer
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 회원탈퇴 성공
+
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"

@@ -1,0 +1,29 @@
+post:
+  summary: "유저 회원가입"
+  tags:
+    - Auth
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../../swagger.yaml#/components/schemas/User"
+  responses:
+    201:
+      description: CREATED
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                example: 201
+              message:
+                type: string
+                example: 회원가입 성공
+              data:
+                type: object
+                schema:
+                  $ref: "../../../swagger.yaml#/components/schemas/User"
+    400:
+      $ref: "../../../swagger.yaml#/components/responses/BadRequest"

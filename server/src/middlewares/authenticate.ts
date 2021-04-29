@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { customStatus, customMessage, customError } from "../utils";
+import * as custom from "@utils/custom";
 
 // Authenticated check
 export const isAuthenticated = (
@@ -10,9 +10,9 @@ export const isAuthenticated = (
   if (req.isAuthenticated()) {
     next();
   } else {
-    const error = new customError(
-      customStatus.FORBIDDEN,
-      customMessage.USER_NOT_AUTHENTICATED,
+    const error = new custom.CustomError(
+      custom.status.FORBIDDEN,
+      custom.message.USER_NOT_AUTHENTICATED,
     );
     next(error);
   }
@@ -27,9 +27,9 @@ export const isNotAuthenticated = (
   if (!req.isAuthenticated()) {
     next();
   } else {
-    const error = new customError(
-      customStatus.FORBIDDEN,
-      customMessage.USER_AUTHENTICATED,
+    const error = new custom.CustomError(
+      custom.status.FORBIDDEN,
+      custom.message.USER_AUTHENTICATED,
     );
     next(error);
   }

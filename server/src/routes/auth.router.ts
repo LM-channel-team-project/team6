@@ -1,10 +1,7 @@
 import express from "express";
 import passport from "passport";
-import {
-  isAuthenticated,
-  isNotAuthenticated,
-} from "../middlewares/authenticate";
-import { AuthController } from "../controllers/v1";
+import { isAuthenticated, isNotAuthenticated } from "@middlewares/authenticate";
+import { AuthController } from "@controllers/v1";
 
 const router = express.Router();
 
@@ -37,13 +34,14 @@ router.get(
   AuthController.callbacks,
 );
 
-// - User Update, User Delete
-router.put("/:id", isAuthenticated, AuthController.updateUser);
+// - User Update, User Delete, Find One User
+router.get("/:id", isAuthenticated, AuthController.findOne);
+router.patch("/:id", isAuthenticated, AuthController.updateUser);
 router.delete("/:id", isAuthenticated, AuthController.deleteUser);
 
 // Local
 // - Login, SignUp, Logout
-router.get("/logout", AuthController.logOut);
+router.get("/logout", isAuthenticated, AuthController.logOut);
 router.post("/signup", isNotAuthenticated, AuthController.createUser);
 router.post(
   "/",
@@ -52,8 +50,6 @@ router.post(
   AuthController.callbacks,
 );
 
-// - For Test
-router.get("/:id", isAuthenticated, AuthController.findOne);
 router.get("/", isAuthenticated, AuthController.findAll);
 
 export default router;

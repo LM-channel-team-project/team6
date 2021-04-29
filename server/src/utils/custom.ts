@@ -1,4 +1,17 @@
-export default {
+export const status = {
+  OK: 200,
+  CREATED: 201,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+  SERVICE_UNAVAILABLE: 503,
+  DB_ERROR: 600,
+};
+
+export const message = {
   NULL_VALUE: "값이 없습니다.",
 
   // Status code messages
@@ -55,4 +68,34 @@ export default {
   POST_DELETE_SUCCESS: "글 삭제 성공",
   POST_DELETE_FAIL: "글 삭제 실패",
   POST_NO_IDX: "해당 글이 없습니다.",
+};
+
+export class CustomError extends Error {
+  status: number;
+  message: string;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+    this.message = message;
+  }
+}
+
+interface APIResponse {
+  status: number;
+  message: string;
+  data?: any;
+}
+
+// JSON Response: status, message, result-data
+export const JSONResponse = (
+  statusCode: number,
+  statusMessage: string,
+  data?: any,
+): APIResponse => {
+  return {
+    status: statusCode,
+    message: statusMessage,
+    data: data,
+  };
 };

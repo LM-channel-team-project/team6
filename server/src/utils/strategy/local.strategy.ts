@@ -1,11 +1,8 @@
 import { Strategy as localStrategy } from "passport-local";
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import { customMessage } from "../";
+import * as custom from "@utils/custom";
 import { getRepository } from "typeorm";
-import { User } from "../../models/entity/User";
-
-dotenv.config();
+import { User } from "@models/entity/User";
 
 type VerifyCallback = (error: any, user?: any, info?: any) => void;
 
@@ -25,12 +22,12 @@ const localVerify = async (
         done(null, user);
       } else {
         done(null, false, {
-          message: customMessage.USER_LOGIN_MISS_MATCH_PW,
+          message: custom.message.USER_LOGIN_MISS_MATCH_PW,
         });
       }
     } else {
       done(null, false, {
-        message: customMessage.USER_LOGIN_FIND_USER_FAIL,
+        message: custom.message.USER_LOGIN_FIND_USER_FAIL,
       });
     }
   } catch (err) {

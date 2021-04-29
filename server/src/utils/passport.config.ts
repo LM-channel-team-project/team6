@@ -1,10 +1,10 @@
 import passport from "passport";
-import localStrategy from "./strategy/localStrategy";
-import kakaoStrategy from "./strategy/kakaoStrategy";
-import githubStrategy from "./strategy/githubStrategy";
+import localStrategy from "./strategy/local.strategy";
+import kakaoStrategy from "./strategy/kakao.strategy";
+import githubStrategy from "./strategy/github.strategy";
 
 import { getRepository } from "typeorm";
-import { User } from "../models/entity/User";
+import { User } from "@models/entity/User";
 
 type VerifyCallback = (error: any, user?: any, info?: any) => void;
 

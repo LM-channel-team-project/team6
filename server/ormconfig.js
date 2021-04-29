@@ -1,5 +1,3 @@
-const baseURL = process.env.NODE_ENV === "production" ? "build" : "src";
-
 export default {
   type: process.env.DB_TYPE,
   host: process.env.DB_HOST,
@@ -9,12 +7,12 @@ export default {
   database: process.env.DB_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [`${baseURL}/models/entity/**/*`],
-  migrations: [`${baseURL}/models/migration/**/*`],
-  subscribers: [`${baseURL}/models/subscriber/**/*`],
+  entities: [__dirname + `/build/models/entity/**/*`],
+  migrations: [__dirname + `/build/models/migration/**/*`],
+  subscribers: [__dirname + `/build/models/subscriber/**/*`],
   cli: {
-    entitiesDir: `${baseURL}/models/entity`,
-    migrationsDir: `${baseURL}/models/migration`,
-    subscribersDir: `${baseURL}/models/subscriber`,
+    entitiesDir: `build/models/entity`,
+    migrationsDir: `build/models/migration`,
+    subscribersDir: `build/models/subscriber`,
   },
 };
