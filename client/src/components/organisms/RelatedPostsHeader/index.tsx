@@ -16,7 +16,7 @@ export default function RelatedPostsHeader(): JSX.Element {
         </S.TitleWrapper>
         <S.LinkWrapper>
           {RELATED_POSTS_SORT.map((sort) => (
-            <S.Link>{sort}</S.Link>
+            <S.Link key={sort}>{sort}</S.Link>
           ))}
         </S.LinkWrapper>
         <S.ButtonWrapper>
