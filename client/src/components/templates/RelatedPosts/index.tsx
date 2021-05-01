@@ -1,13 +1,13 @@
 import React from 'react';
+import RelatedPostsBody from 'components/organisms/RelatedPostsBody';
+import RelatedPostsHeader from 'components/organisms/RelatedPostsHeader';
 import * as S from './style';
-import RelatedPostsHeader from '../RelatedPostsHeader';
-import RelatedPostsBody from '../RelatedPostsBody';
 
 export default function RelatedPosts(): JSX.Element {
   return (
-    <S.RelatedPostsContainer>
+    <S.Container>
       <RelatedPostsHeader />
       <RelatedPostsBody />
-    </S.RelatedPostsContainer>
+    </S.Container>
   );
 }
