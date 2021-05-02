@@ -34,11 +34,6 @@ router.get(
   AuthController.callbacks,
 );
 
-// - User Update, User Delete, Find One User
-router.get("/:id", isAuthenticated, AuthController.findOne);
-router.patch("/:id", isAuthenticated, AuthController.updateUser);
-router.delete("/:id", isAuthenticated, AuthController.deleteUser);
-
 // Local
 // - Login, SignUp, Logout
 router.get("/logout", isAuthenticated, AuthController.logOut);
@@ -49,6 +44,11 @@ router.post(
   passport.authenticate("local"),
   AuthController.callbacks,
 );
+
+// - User Update, User Delete, Find One User
+router.get("/:id", isAuthenticated, AuthController.findOne);
+router.patch("/:id", isAuthenticated, AuthController.updateUser);
+router.delete("/:id", isAuthenticated, AuthController.deleteUser);
 
 router.get("/", isAuthenticated, AuthController.findAll);
 

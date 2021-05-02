@@ -38,6 +38,8 @@ export const message = {
   USER_LOGIN_MISS_MATCH_VAL_PW: "비밀번호가 일치하지 않습니다.",
   USER_LOGIN_SUCCESS: "로그인 성공",
   USER_LOGIN_FAIL: "로그인 실패",
+  USER_LOGOUT_SUCCESS: "로그아웃 성공",
+  USER_LOGOUT_FAIL: "로그아웃 실패",
 
   USER_ALREADY_USED_NICKNAME: "이미 사용중인 닉네임입니다.",
   USER_ALREADY_USED_EMAIL: "이미 사용중인 이메일입니다.",
@@ -73,11 +75,13 @@ export const message = {
 export class CustomError extends Error {
   status: number;
   message: string;
+  data?: any;
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, data?: any) {
     super(message);
     this.status = status;
     this.message = message;
+    this.data = data;
   }
 }
 
