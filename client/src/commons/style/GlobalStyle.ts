@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
     border: 3px solid tomato;
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
-    background-color: #F8FAFB;
+    background-color: #EEF6FC;
   }
   ul, ol {
     list-style: none;

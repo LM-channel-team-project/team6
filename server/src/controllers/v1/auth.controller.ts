@@ -71,8 +71,24 @@ export const createUser = async (
 
 // Logout
 export const logOut = (req: Request, res: Response, next: NextFunction) => {
-  req.logOut();
-  res.redirect(`${process.env.SERVER_URL_DEVELOPMENT}/api/v1/auth`);
+  try {
+    req.logOut();
+    res
+      .status(custom.status.OK)
+      .json(
+        custom.JSONResponse(
+          custom.status.OK,
+          custom.message.USER_LOGOUT_SUCCESS,
+        ),
+      );
+  } catch (err) {
+    const error = new custom.CustomError(
+      custom.status.BAD_REQUEST,
+      custom.message.USER_LOGOUT_FAIL,
+      err,
+    );
+    next(error);
+  }
 };
 
 // User Update
