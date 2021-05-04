@@ -4,6 +4,7 @@ import GlobalStyle from 'commons/style/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Main from 'pages/Main';
+import Login from 'pages/Login';
 
 function App(): JSX.Element {
   return (
@@ -13,6 +14,7 @@ function App(): JSX.Element {
         <Router>
           <Switch>
             <Route exact path="/" component={Main} />
+            <Route exact path="/login" component={Login} />
           </Switch>
         </Router>
       </ThemeProvider>
