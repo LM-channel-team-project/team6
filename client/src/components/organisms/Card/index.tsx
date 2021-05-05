@@ -1,13 +1,16 @@
 import React from 'react';
-import { CardBox } from './style';
+import Category from 'components/atoms/Category';
+import User from 'components/molecules/User';
+import bg from 'assets/image/bg.png';
+import * as S from './style';
 
-function Card() {
+function Card(): JSX.Element {
   return (
-    <CardBox>
+    <S.CardContainer background={bg}>
       <div className="text-info">
         <h2 className="title">Title</h2>
-        <span className="category"># JavaScript</span>
-        <span className="category react"># React</span>
+        <Category categories="javascript" />
+        <Category categories="react" />
         <p>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum,
           atque. Lorem, ipsum dolor sit amet consectetur adipisicing elit.
@@ -16,13 +19,9 @@ function Card() {
         </p>
       </div>
       <div className="user-info">
-        <img
-          src="https://www.pngarts.com/files/11/Avatar-PNG-Free-Download.png"
-          alt="avatar"
-        />
-        <span>by. user01</span>
+        <User />
       </div>
-    </CardBox>
+    </S.CardContainer>
   );
 }
 
