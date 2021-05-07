@@ -92,7 +92,7 @@ const runServer = async () => {
     // database connection
     const connection = await createConnection();
     console.log(`
-        \x1b[1mDB status:\x1b[0m database connected
+        \x1b[1mDB Status:\x1b[0m database connected
         \x1b[1mDB Type:\x1b[0m ${process.env.DB_TYPE}\n
         Note that the development build is not optimized.
         To create a production build, use \x1b[36myarn build\x1b[0m.
