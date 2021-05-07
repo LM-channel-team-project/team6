@@ -59,7 +59,9 @@ passportConfig();
 
 // router settings
 app.use("/api/v1", router); // v1
-app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+if (process.env.NODE_ENV !== "production") {
+  app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+}
 
 // error handlers
 app.use(error404);
