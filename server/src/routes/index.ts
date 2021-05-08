@@ -1,4 +1,5 @@
 import express from "express";
+import * as custom from "@utils/custom";
 import AuthRouter from "./auth.router";
 import PostRouter from "./post.router";
 

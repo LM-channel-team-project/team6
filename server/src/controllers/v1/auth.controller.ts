@@ -1,214 +1,148 @@
 import { Request, Response, NextFunction } from "express";
 import * as custom from "@utils/custom";
-import bcrypt from "bcrypt";
+import * as AuthService from "@services/auth.service";
 
-import { getRepository } from "typeorm";
-import { User } from "@models/entity/User";
-
-/*
-  URL: /api/v1/auth
-  User
-    id: number;
-    nickname: string;
-    username: string;
-    email: string;
-    password: string;
-    oauthId: string;
-    provider: string;
-*/
-
-// - passport callbacks
-export const callbacks = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  res
-    .status(custom.status.OK)
-    .json(
-      custom.JSONResponse(custom.status.OK, custom.message.USER_LOGIN_SUCCESS),
-    );
-};
-
-// - signUp
-export const createUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const { nickname, username, email, password } = req.body;
-
-  try {
-    const user = await getRepository(User).findOne({ where: { email } });
-    if (user) {
-      throw new custom.CustomError(
-        custom.status.BAD_REQUEST,
-        custom.message.USER_ALREADY_USED_EMAIL,
-      );
-    }
-    const hash = await bcrypt.hash(password, 12);
-
-    const result = await getRepository(User).save({
-      email,
-      nickname,
-      username,
-      password: hash,
-    });
-
-    res
-      .status(custom.status.CREATED)
-      .json(
-        custom.JSONResponse(
-          custom.status.CREATED,
-          custom.message.USER_SIGNUP_SUCCESS,
-          result,
-        ),
-      );
-  } catch (err) {
-    next(err);
-  }
-};
-
-// Logout
-export const logOut = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    req.logOut();
-    res
-      .status(custom.status.OK)
-      .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.USER_LOGOUT_SUCCESS,
-        ),
-      );
-  } catch (err) {
-    const error = new custom.CustomError(
-      custom.status.BAD_REQUEST,
-      custom.message.USER_LOGOUT_FAIL,
-      err,
-    );
-    next(error);
-  }
-};
-
-// User Update
-export const updateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const user = await getRepository(User).findOne({
-      where: { id: req.params.id },
-    });
-
-    if (!user) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.USER_LOGIN_FIND_USER_FAIL,
-      );
-    }
-
-    getRepository(User).merge(user, req.body);
-    const result = await getRepository(User).save(user);
-    res
-      .status(custom.status.OK)
-      .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.USER_CHANGE_NICKNAME_SUCCESS,
-          result,
-        ),
-      );
-  } catch (err) {
-    next(err);
-  }
-};
-
-// User Delete
-export const deleteUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const result = await getRepository(User).delete(req.params.id);
-
-    if (!result) {
-      throw new custom.CustomError(
-        custom.status.BAD_REQUEST,
-        custom.message.USER_WITHDRAW_FAIL,
-      );
-    }
-    req.logOut();
-    res
-      .status(custom.status.OK)
-      .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.USER_WITHDRAW_SUCCESS,
-          result,
-        ),
-      );
-  } catch (err) {
-    next(err);
-  }
-};
-
-// findAll
+// Get Users
 export const findAll = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const users = await getRepository(User).find();
-
-    if (!users) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.USER_FIND_ALL_FAIL,
-      );
-    }
+    const result = await AuthService.findAll();
     res
-      .status(custom.status.OK)
+      .status(200)
       .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.USER_FIND_ALL_SUCCESS,
-          users,
-        ),
+        custom.JSONResponse(200, custom.message.USER_FIND_ALL_SUCCESS, result),
       );
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
-// findOne
+// Get User
 export const findOne = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const user = await getRepository(User).findOne(req.params.id);
-
-    if (!user) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.USER_FIND_ONE_FAIL,
-      );
-    }
+    const result = await AuthService.findOne(req.params.id);
     res
-      .status(custom.status.OK)
+      .status(200)
+      .json(
+        custom.JSONResponse(200, custom.message.USER_FIND_ONE_SUCCESS, result),
+      );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Create and Save
+export const createUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await AuthService.createUser(req.body);
+    res
+      .status(201)
+      .json(
+        custom.JSONResponse(201, custom.message.USER_SIGNUP_SUCCESS, result),
+      );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Update General Information and Save
+export const updateUserGeneral = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await AuthService.updateUserGeneral(req.body, req.params.id);
+    res
+      .status(200)
       .json(
         custom.JSONResponse(
-          custom.status.OK,
-          custom.message.USER_FIND_ONE_SUCCESS,
-          user,
+          200,
+          custom.message.USER_CHANGE_NICKNAME_SUCCESS,
+          result,
         ),
       );
-  } catch (err) {
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Update Password and Save
+export const updateUserPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await AuthService.updateUserPassword(
+      req.body,
+      req.params.id,
+    );
+    res
+      .status(200)
+      .json(
+        custom.JSONResponse(
+          200,
+          custom.message.USER_CHANGE_NICKNAME_SUCCESS,
+          result,
+        ),
+      );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await AuthService.deleteUser(req.params.id);
+    req.logout();
+    res
+      .status(200)
+      .json(
+        custom.JSONResponse(200, custom.message.USER_WITHDRAW_SUCCESS, result),
+      );
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Logout
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    req.logout();
+    res
+      .status(200)
+      .json(custom.JSONResponse(200, custom.message.USER_LOGOUT_SUCCESS));
+  } catch (error) {
+    const err = new custom.CustomError(
+      400,
+      custom.message.USER_LOGOUT_FAIL,
+      error,
+    );
     next(err);
   }
+};
+
+// Callbacks
+export const callbacks = (req: Request, res: Response) => {
+  // change this code
+  res
+    .status(200)
+    .json(custom.JSONResponse(200, custom.message.USER_LOGIN_SUCCESS));
 };
