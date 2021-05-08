@@ -16,11 +16,8 @@ export class User {
   @Column({ length: 45, unique: true, default: null })
   email: string;
 
-  @Column({ length: 80, nullable: false, default: "0000" })
+  @Column({ length: 100, nullable: false, default: "0000" })
   password: string;
-
-  @Column({ length: 80, default: null })
-  salt: string;
 
   @Column({ default: null })
   oauthId: string;

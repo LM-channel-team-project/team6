@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import { randomBytes } from "crypto";
 import { getRepository } from "typeorm";
 import { User } from "@models/entity/User";
 import * as custom from "@utils/custom";
@@ -30,16 +29,17 @@ export const createUser = async (userBody: User) => {
   if (user) {
     throw new custom.CustomError(400, custom.message.USER_ALREADY_USED_EMAIL);
   }
-  const salt = randomBytes(32).toString();
-  const hashedPassword = await bcrypt.hash(password, parseInt(salt));
+
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   const userRecord = getRepository(User).create({
     email,
     nickname,
     username,
     password: hashedPassword,
-    salt: salt,
   });
+
   const result = await getRepository(User).save(userRecord);
   return result;
 };
@@ -71,7 +71,7 @@ export const updateUserPassword = async (userBody: User, userId: string) => {
   if (!user) {
     throw new custom.CustomError(400, custom.message.USER_LOGIN_FIND_USER_FAIL);
   }
-  const salt = randomBytes(32).toString();
+  const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const userRecord = getRepository(User).create({
