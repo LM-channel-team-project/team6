@@ -7,6 +7,7 @@ import * as S from './style';
 export default function Main(): JSX.Element {
   return (
     <S.Container>
+      <MainHeader />
       <CardList />
       <RelatedPosts />
     </S.Container>
