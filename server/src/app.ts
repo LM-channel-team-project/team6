@@ -59,7 +59,9 @@ passportConfig();
 
 // router settings
 app.use("/api/v1", router); // v1
-app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+if (process.env.NODE_ENV !== "production") {
+  app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+}
 
 // error handlers
 app.use(error404);
@@ -82,13 +84,21 @@ const runServer = async () => {
 
   // server on
   const server = app.listen(port, () => {
-    console.log(`>> server on | Port: ${port}`);
+    console.log(`
+      You can now use \x1b[34mserver\x1b[0m.\n
+      \t\x1b[1mLocal:\x1b[0m \t\thttp://localhost:\x1b[1m${port}\x1b[0m/api/v1
+      \t\x1b[1mAPI-Docs:\x1b[0m \thttp://localhost:\x1b[1m${port}\x1b[0m/api-docs`);
   });
 
   try {
     // database connection
     const connection = await createConnection();
-    console.log(`>> database connected | DB Type: ${process.env.DB_TYPE}`);
+    console.log(`
+        \x1b[1mDB Status:\x1b[0m database connected
+        \x1b[1mDB Type:\x1b[0m ${process.env.DB_TYPE}\n
+        Note that the development build is not optimized.
+        To create a production build, use \x1b[36myarn build\x1b[0m.
+      `);
   } catch (err) {
     stopServer(server, err);
   }

@@ -4,10 +4,7 @@ import * as custom from "@utils/custom";
 
 // Create Not Found(404) error
 export const error404 = (req: Request, res: Response, next: NextFunction) => {
-  const error = new custom.CustomError(
-    custom.status.NOT_FOUND,
-    custom.message.NOT_FOUND,
-  );
+  const error = new custom.CustomError(404, custom.message.NOT_FOUND);
   next(error);
 };
 
@@ -18,7 +15,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  const statusCode = err.status || custom.status.INTERNAL_SERVER_ERROR;
+  const statusCode = err.status || 500;
   const statusMessage = err.message || custom.message.INTERNAL_SERVER_ERROR;
 
   res.status(statusCode).json(custom.JSONResponse(statusCode, statusMessage));

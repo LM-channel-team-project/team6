@@ -14,22 +14,15 @@ export const findAll = async (
     const posts = await getRepository(Post).find({ relations: ["user"] });
 
     if (!posts) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_FIND_ALL_FAIL,
-      );
+      throw new custom.CustomError(404, custom.message.POST_FIND_ALL_FAIL);
     }
 
     console.log(req.sessionID);
 
     res
-      .status(custom.status.OK)
+      .status(200)
       .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.POST_FIND_ALL_SUCCESS,
-          posts,
-        ),
+        custom.JSONResponse(200, custom.message.POST_FIND_ALL_SUCCESS, posts),
       );
   } catch (err) {
     next(err);
@@ -48,21 +41,12 @@ export const findOne = async (
     });
 
     if (!post) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_NO_IDX,
-      );
+      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
     }
 
     res
-      .status(custom.status.OK)
-      .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.POST_FIND_SUCCESS,
-          post,
-        ),
-      );
+      .status(200)
+      .json(custom.JSONResponse(200, custom.message.POST_FIND_SUCCESS, post));
   } catch (err) {
     next(err);
   }
@@ -82,28 +66,18 @@ export const createPost = async (
     post.user = req.body.userId;
 
     if (!post) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_CREATE_FAIL,
-      );
+      throw new custom.CustomError(404, custom.message.POST_CREATE_FAIL);
     }
 
     const result = await getRepository(Post).save(post);
     if (!result) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_CREATE_FAIL,
-      );
+      throw new custom.CustomError(404, custom.message.POST_CREATE_FAIL);
     }
 
     res
-      .status(custom.status.CREATED)
+      .status(201)
       .json(
-        custom.JSONResponse(
-          custom.status.CREATED,
-          custom.message.POST_CREATE_SUCCESS,
-          result,
-        ),
+        custom.JSONResponse(201, custom.message.POST_CREATE_SUCCESS, result),
       );
   } catch (err) {
     next(err);
@@ -120,31 +94,19 @@ export const updatePost = async (
     const post = await getRepository(Post).findOne(req.params.id);
 
     if (!post) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_NO_IDX,
-      );
+      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
     }
 
     getRepository(Post).merge(post, req.body);
     const result = await getRepository(Post).save(post);
 
     if (!result) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_NO_IDX,
-      );
+      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
     }
 
     res
-      .status(custom.status.OK)
-      .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.POST_FIND_SUCCESS,
-          result,
-        ),
-      );
+      .status(200)
+      .json(custom.JSONResponse(200, custom.message.POST_FIND_SUCCESS, result));
   } catch (err) {
     next(err);
   }
@@ -160,29 +122,18 @@ export const deletePost = async (
     const post = await getRepository(Post).findOne(req.params.id);
 
     if (!post) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_NO_IDX,
-      );
+      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
     }
 
     const result = await getRepository(Post).delete(req.params.id);
 
     if (!result) {
-      throw new custom.CustomError(
-        custom.status.NOT_FOUND,
-        custom.message.POST_DELETE_FAIL,
-      );
+      throw new custom.CustomError(404, custom.message.POST_DELETE_FAIL);
     }
 
     res
-      .status(custom.status.OK)
-      .json(
-        custom.JSONResponse(
-          custom.status.OK,
-          custom.message.POST_DELETE_SUCCESS,
-        ),
-      );
+      .status(200)
+      .json(custom.JSONResponse(200, custom.message.POST_DELETE_SUCCESS));
   } catch (err) {
     next(err);
   }

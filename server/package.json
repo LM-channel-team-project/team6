@@ -68,6 +68,7 @@
     "@middlewares": "build/middlewares",
     "@models": "build/models",
     "@routes": "build/routes",
+    "@services": "build/services",
     "@utils": "build/utils"
   },
   "jest": {

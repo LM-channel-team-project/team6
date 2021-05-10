@@ -2,12 +2,11 @@ import express from "express";
 import passport from "passport";
 import { isAuthenticated, isNotAuthenticated } from "@middlewares/authenticate";
 import { AuthController } from "@controllers/v1";
-
-const router = express.Router();
-
 /*
   URL: /api/auth
 */
+
+const router = express.Router();
 
 // OAuth
 // - Kakao
@@ -36,7 +35,7 @@ router.get(
 
 // Local
 // - Login, SignUp, Logout
-router.get("/logout", isAuthenticated, AuthController.logOut);
+router.get("/logout", isAuthenticated, AuthController.logout);
 router.post("/signup", isNotAuthenticated, AuthController.createUser);
 router.post(
   "/",
@@ -47,7 +46,7 @@ router.post(
 
 // - User Update, User Delete, Find One User
 router.get("/:id", isAuthenticated, AuthController.findOne);
-router.patch("/:id", isAuthenticated, AuthController.updateUser);
+router.patch("/:id", isAuthenticated, AuthController.updateUserGeneral);
 router.delete("/:id", isAuthenticated, AuthController.deleteUser);
 
 router.get("/", isAuthenticated, AuthController.findAll);
