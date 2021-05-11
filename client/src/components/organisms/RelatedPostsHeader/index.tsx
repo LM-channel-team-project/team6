@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'components/atoms/Button';
 import {
-  RELATED_POSTS_TITLE,
+  RELATED_POSTS_TEXT,
   RELATED_POSTS_CREATE_BUTTON,
   RELATED_POSTS_SORT,
 } from 'commons/constants/string';
@@ -12,7 +12,7 @@ export default function RelatedPostsHeader(): JSX.Element {
     <S.Container>
       <S.HeaderContainer>
         <S.TitleWrapper>
-          <S.Title>{RELATED_POSTS_TITLE}</S.Title>
+          <S.Title>{RELATED_POSTS_TEXT}</S.Title>
         </S.TitleWrapper>
         <S.LinkWrapper>
           {RELATED_POSTS_SORT.map((sort) => (

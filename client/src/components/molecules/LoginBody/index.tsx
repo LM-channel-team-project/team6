@@ -5,13 +5,23 @@ import {
   SIGN_UP_URL,
   SIGN_UP_WELCOME_TEXT,
   SIGN_UP_LINK_TEXT,
+  LOGIN_EMAIL_TEXT,
+  LOGIN_EMAIL_ALT,
 } from 'commons/constants/string';
+import LoginButton from 'components/atoms/LoginButton';
+import LoginUserIcon from 'assets/image/login-user.png';
 import * as S from './style';
 
 export default function LoginBody(): JSX.Element {
   return (
     <S.Container>
-      <S.ButtonContainer />
+      <S.ButtonContainer>
+        <LoginButton
+          icon={LoginUserIcon}
+          title={LOGIN_EMAIL_TEXT}
+          alt={LOGIN_EMAIL_ALT}
+        />
+      </S.ButtonContainer>
       <S.LinkContainer>
         <BasicText text={SIGN_UP_WELCOME_TEXT} />
         &nbsp;
