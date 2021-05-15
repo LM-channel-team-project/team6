@@ -103,3 +103,20 @@ export const JSONResponse = (
     data: data,
   };
 };
+
+export const getWeek = () => {
+  const curr = new Date();
+  const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
+
+  var KR_TIME_DIFF = 9 * 60 * 60 * 1000; // KR TIMEZONE
+  KR_TIME_DIFF = 0; // 임시
+  const now = new Date(utc + KR_TIME_DIFF);
+
+  now.setHours(0, 0, 0, 0);
+  const weekstart = now.getDate() - now.getDay();
+  const weekend = weekstart + 7;
+  const start = new Date(now.setDate(weekstart) + KR_TIME_DIFF);
+  const end = new Date(now.setDate(weekend) + KR_TIME_DIFF);
+
+  return [start.toISOString(), end.toISOString()];
+};
