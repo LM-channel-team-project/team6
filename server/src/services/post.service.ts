@@ -1,22 +1,74 @@
-import { getRepository } from "typeorm";
+import { Between, getRepository } from "typeorm";
 import { Post } from "@models/entity/Post";
 import * as custom from "@utils/custom";
 
 // Get Posts
 export const findPosts = async (postQuery: any) => {
   const { filter, page, limit } = postQuery;
-  const posts = await getRepository(Post).find({
-    relations: ["user"],
-    skip: (page - 1) * limit,
-    take: limit,
-  });
+  const week = custom.getWeek();
+
+  var posts: Post[];
+
+  switch (filter) {
+    case "week":
+      posts = await getRepository(Post).find({
+        relations: ["user"],
+        where: {
+          createdAt: Between(week[0], week[1]),
+        },
+        order: {
+          likes: "DESC",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      break;
+    case "view":
+      posts = await getRepository(Post).find({
+        relations: ["user"],
+        order: {
+          views: "DESC",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      break;
+    case "like":
+      posts = await getRepository(Post).find({
+        relations: ["user"],
+        order: {
+          likes: "DESC",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      break;
+    case "latest":
+      posts = await getRepository(Post).find({
+        relations: ["user"],
+        order: {
+          createdAt: "DESC",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      break;
+    default:
+      posts = await getRepository(Post).find({
+        relations: ["user"],
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      break;
+  }
+
   if (!posts) {
     throw new custom.CustomError(400, custom.message.POST_FIND_ALL_FAIL);
   }
   return posts;
 };
 
-// Get Post
+// Get Post (increment view)
 export const findPost = async (postId: string) => {
   const post = await getRepository(Post).findOne(postId, {
     relations: ["user"],
@@ -24,19 +76,19 @@ export const findPost = async (postId: string) => {
   if (!post) {
     throw new custom.CustomError(400, custom.message.POST_NO_IDX);
   }
-  return post;
+  const postRecord = getRepository(Post).merge(post, { views: post.views + 1 });
+  const result = await getRepository(Post).save(postRecord);
+  return result;
 };
 
 // Create Post
-export const createPost = async (postBody: Post) => {
-  const { title, content, hashtags, user } = postBody;
+export const createPost = async (postBody: Post, user: any) => {
+  const { title, content } = postBody;
   const postRecord = getRepository(Post).create({
     title,
     content,
-    hashtags,
-    user,
+    user: user.id,
   });
-  console.log(postBody, postRecord); // Test
   const result = await getRepository(Post).save(postRecord);
   return result;
 };
@@ -67,13 +119,14 @@ export const deletePost = async (postId: string) => {
 };
 
 // Like Clicked
-export const clickLikePost = async () => {};
-
-// Order by Week
-export const filterWeekPost = async () => {};
-
-// Order by Latest
-export const filterLatestPost = async () => {};
-
-// Order by Like
-export const filterLikePost = async () => {};
+export const clickLikePost = async (postId: string) => {
+  const post = await getRepository(Post).findOne(postId, {
+    relations: ["user"],
+  });
+  if (!post) {
+    throw new custom.CustomError(400, custom.message.POST_NO_IDX);
+  }
+  const postRecord = getRepository(Post).merge(post, { likes: post.likes + 1 });
+  const result = await getRepository(Post).save(postRecord);
+  return result;
+};
