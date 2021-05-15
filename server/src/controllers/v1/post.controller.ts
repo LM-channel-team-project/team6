@@ -49,7 +49,7 @@ export const createPost = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await PostService.createPost(req.body);
+    const result = await PostService.createPost(req.body, req.user);
     if (!result) {
       throw new custom.CustomError(400, custom.message.POST_CREATE_FAIL);
     }
@@ -98,6 +98,22 @@ export const deletePost = async (
     res
       .status(200)
       .json(custom.JSONResponse(200, custom.message.POST_DELETE_SUCCESS));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const clickLikePost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await PostService.clickLikePost(req.params.id);
+    if (!result) {
+      throw new custom.CustomError(400, custom.message.NULL_VALUE);
+    }
+    res.status(200).json(custom.JSONResponse(200, custom.message.OK, result));
   } catch (error) {
     next(error);
   }
