@@ -1,19 +1,24 @@
 import styled from 'styled-components';
 
+interface ButtonProps {
+  background: string | undefined;
+}
+
 export const Container = styled.div``;
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonProps>`
   width: 100%;
   height: 59px;
   font-size: 20px;
   border: 1px solid #bfbcbc;
-  background-color: white;
   border-radius: 5px;
   position: relative;
   &:hover {
     cursor: pointer;
     border: 1px solid #9664ff;
   }
+  background: ${(props) => props.background || 'white'};
+  color: ${(props) => props.color || 'black'};
 `;
 
 export const ButtonTitle = styled.p`
