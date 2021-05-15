@@ -23,11 +23,11 @@ export class Post {
   @Column({ length: 1000, default: "" })
   content: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "datetime" })
   createdAt: Date;
 
   @Column({ default: 0 })
-  hits: number;
+  likes: number;
 
   @Column({ default: 0 })
   views: number;
