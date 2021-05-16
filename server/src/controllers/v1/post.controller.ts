@@ -1,54 +1,44 @@
 import { Request, Response, NextFunction } from "express";
 import * as custom from "@utils/custom";
-
-import { getRepository } from "typeorm";
-import { Post } from "@models/entity/Post";
+import * as PostService from "@services/post.service";
 
 // findAll Posts
-export const findAll = async (
+export const findPosts = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const posts = await getRepository(Post).find({ relations: ["user"] });
-
-    if (!posts) {
-      throw new custom.CustomError(404, custom.message.POST_FIND_ALL_FAIL);
+    const result = await PostService.findPosts(req.query);
+    if (!result) {
+      throw new custom.CustomError(400, custom.message.POST_FIND_ALL_FAIL);
     }
-
-    console.log(req.sessionID);
-
     res
       .status(200)
       .json(
-        custom.JSONResponse(200, custom.message.POST_FIND_ALL_SUCCESS, posts),
+        custom.JSONResponse(200, custom.message.POST_FIND_ALL_SUCCESS, result),
       );
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
 // findOne Post
-export const findOne = async (
+export const findPost = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const post = await getRepository(Post).findOne(req.params.id, {
-      relations: ["user"],
-    });
-
-    if (!post) {
-      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
+    const result = await PostService.findPost(req.params.id);
+    if (!result) {
+      throw new custom.CustomError(400, custom.message.POST_NO_IDX);
     }
-
     res
       .status(200)
-      .json(custom.JSONResponse(200, custom.message.POST_FIND_SUCCESS, post));
-  } catch (err) {
-    next(err);
+      .json(custom.JSONResponse(200, custom.message.POST_FIND_SUCCESS, result));
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -59,28 +49,17 @@ export const createPost = async (
   next: NextFunction,
 ) => {
   try {
-    const post = new Post();
-    post.title = req.body.title;
-    post.content = req.body.content;
-    post.hashtags = req.body.hashtags;
-    post.user = req.body.userId;
-
-    if (!post) {
-      throw new custom.CustomError(404, custom.message.POST_CREATE_FAIL);
-    }
-
-    const result = await getRepository(Post).save(post);
+    const result = await PostService.createPost(req.body, req.user);
     if (!result) {
-      throw new custom.CustomError(404, custom.message.POST_CREATE_FAIL);
+      throw new custom.CustomError(400, custom.message.POST_CREATE_FAIL);
     }
-
     res
       .status(201)
       .json(
         custom.JSONResponse(201, custom.message.POST_CREATE_SUCCESS, result),
       );
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -91,24 +70,17 @@ export const updatePost = async (
   next: NextFunction,
 ) => {
   try {
-    const post = await getRepository(Post).findOne(req.params.id);
-
-    if (!post) {
-      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
-    }
-
-    getRepository(Post).merge(post, req.body);
-    const result = await getRepository(Post).save(post);
-
+    const result = await PostService.updatePost(req.body, req.params.id);
     if (!result) {
-      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
+      throw new custom.CustomError(400, custom.message.POST_UPDATE_FAIL);
     }
-
     res
       .status(200)
-      .json(custom.JSONResponse(200, custom.message.POST_FIND_SUCCESS, result));
-  } catch (err) {
-    next(err);
+      .json(
+        custom.JSONResponse(200, custom.message.POST_UPDATE_SUCCESS, result),
+      );
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -119,22 +91,30 @@ export const deletePost = async (
   next: NextFunction,
 ) => {
   try {
-    const post = await getRepository(Post).findOne(req.params.id);
-
-    if (!post) {
-      throw new custom.CustomError(404, custom.message.POST_NO_IDX);
-    }
-
-    const result = await getRepository(Post).delete(req.params.id);
-
+    const result = await PostService.deletePost(req.params.id);
     if (!result) {
-      throw new custom.CustomError(404, custom.message.POST_DELETE_FAIL);
+      throw new custom.CustomError(400, custom.message.POST_DELETE_FAIL);
     }
-
     res
       .status(200)
       .json(custom.JSONResponse(200, custom.message.POST_DELETE_SUCCESS));
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const clickLikePost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await PostService.clickLikePost(req.params.id);
+    if (!result) {
+      throw new custom.CustomError(400, custom.message.NULL_VALUE);
+    }
+    res.status(200).json(custom.JSONResponse(200, custom.message.OK, result));
+  } catch (error) {
+    next(error);
   }
 };
