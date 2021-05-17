@@ -3,17 +3,22 @@ import * as custom from "@utils/custom";
 import * as AuthService from "@services/auth.service";
 
 // Get Users
-export const findAll = async (
+export const findUsers = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const result = await AuthService.findAll();
+    const result = await AuthService.findUsers();
     res
       .status(200)
       .json(
-        custom.JSONResponse(200, custom.message.USER_FIND_ALL_SUCCESS, result),
+        custom.JSONResponse(
+          200,
+          custom.message.USER_FIND_ALL_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -21,17 +26,22 @@ export const findAll = async (
 };
 
 // Get User
-export const findOne = async (
+export const findUser = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const result = await AuthService.findOne(req.params.id);
+    const result = await AuthService.findUser(req.params.id);
     res
       .status(200)
       .json(
-        custom.JSONResponse(200, custom.message.USER_FIND_ONE_SUCCESS, result),
+        custom.JSONResponse(
+          200,
+          custom.message.USER_FIND_ONE_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -49,7 +59,12 @@ export const createUser = async (
     res
       .status(201)
       .json(
-        custom.JSONResponse(201, custom.message.USER_SIGNUP_SUCCESS, result),
+        custom.JSONResponse(
+          201,
+          custom.message.USER_SIGNUP_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -70,6 +85,7 @@ export const updateUserGeneral = async (
         custom.JSONResponse(
           200,
           custom.message.USER_CHANGE_NICKNAME_SUCCESS,
+          true,
           result,
         ),
       );
@@ -95,6 +111,7 @@ export const updateUserPassword = async (
         custom.JSONResponse(
           200,
           custom.message.USER_CHANGE_NICKNAME_SUCCESS,
+          true,
           result,
         ),
       );
@@ -115,7 +132,12 @@ export const deleteUser = async (
     res
       .status(200)
       .json(
-        custom.JSONResponse(200, custom.message.USER_WITHDRAW_SUCCESS, result),
+        custom.JSONResponse(
+          200,
+          custom.message.USER_WITHDRAW_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -128,7 +150,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
     req.logout();
     res
       .status(200)
-      .json(custom.JSONResponse(200, custom.message.USER_LOGOUT_SUCCESS));
+      .json(custom.JSONResponse(200, custom.message.USER_LOGOUT_SUCCESS, true));
   } catch (error) {
     const err = new custom.CustomError(
       400,
@@ -144,5 +166,5 @@ export const callbacks = (req: Request, res: Response) => {
   // change this code
   res
     .status(200)
-    .json(custom.JSONResponse(200, custom.message.USER_LOGIN_SUCCESS));
+    .json(custom.JSONResponse(200, custom.message.USER_LOGIN_SUCCESS, true));
 };

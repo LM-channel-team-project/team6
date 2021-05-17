@@ -18,5 +18,7 @@ export const errorHandler = (
   const statusCode = err.status || 500;
   const statusMessage = err.message || custom.message.INTERNAL_SERVER_ERROR;
 
-  res.status(statusCode).json(custom.JSONResponse(statusCode, statusMessage));
+  res
+    .status(statusCode)
+    .json(custom.JSONResponse(statusCode, statusMessage, false, err));
 };

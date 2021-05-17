@@ -16,7 +16,12 @@ export const findPosts = async (
     res
       .status(200)
       .json(
-        custom.JSONResponse(200, custom.message.POST_FIND_ALL_SUCCESS, result),
+        custom.JSONResponse(
+          200,
+          custom.message.POST_FIND_ALL_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -36,7 +41,14 @@ export const findPost = async (
     }
     res
       .status(200)
-      .json(custom.JSONResponse(200, custom.message.POST_FIND_SUCCESS, result));
+      .json(
+        custom.JSONResponse(
+          200,
+          custom.message.POST_FIND_SUCCESS,
+          true,
+          result,
+        ),
+      );
   } catch (error) {
     next(error);
   }
@@ -56,7 +68,12 @@ export const createPost = async (
     res
       .status(201)
       .json(
-        custom.JSONResponse(201, custom.message.POST_CREATE_SUCCESS, result),
+        custom.JSONResponse(
+          201,
+          custom.message.POST_CREATE_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -77,7 +94,12 @@ export const updatePost = async (
     res
       .status(200)
       .json(
-        custom.JSONResponse(200, custom.message.POST_UPDATE_SUCCESS, result),
+        custom.JSONResponse(
+          200,
+          custom.message.POST_UPDATE_SUCCESS,
+          true,
+          result,
+        ),
       );
   } catch (error) {
     next(error);
@@ -97,7 +119,7 @@ export const deletePost = async (
     }
     res
       .status(200)
-      .json(custom.JSONResponse(200, custom.message.POST_DELETE_SUCCESS));
+      .json(custom.JSONResponse(200, custom.message.POST_DELETE_SUCCESS, true));
   } catch (error) {
     next(error);
   }
@@ -113,7 +135,9 @@ export const clickLikePost = async (
     if (!result) {
       throw new custom.CustomError(400, custom.message.NULL_VALUE);
     }
-    res.status(200).json(custom.JSONResponse(200, custom.message.OK, result));
+    res
+      .status(200)
+      .json(custom.JSONResponse(200, custom.message.OK, true, result));
   } catch (error) {
     next(error);
   }

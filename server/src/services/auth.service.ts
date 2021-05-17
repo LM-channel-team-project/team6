@@ -4,7 +4,7 @@ import { User } from "@models/entity/User";
 import * as custom from "@utils/custom";
 
 // Get Users
-export const findAll = async () => {
+export const findUsers = async () => {
   const users = await getRepository(User).find();
   if (!users) {
     throw new custom.CustomError(400, custom.message.USER_FIND_ONE_FAIL);
@@ -13,7 +13,7 @@ export const findAll = async () => {
 };
 
 // Get User
-export const findOne = async (userId: string) => {
+export const findUser = async (userId: string) => {
   const user = await getRepository(User).findOne(userId);
   if (!user) {
     throw new custom.CustomError(400, custom.message.USER_FIND_ONE_FAIL);
