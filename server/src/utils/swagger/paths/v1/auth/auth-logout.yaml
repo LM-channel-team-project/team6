@@ -16,5 +16,8 @@ get:
               message:
                 type: string
                 example: 로그아웃 성공
+              success:
+                type: boolean
+                example: true
     400:
       $ref: "../../../swagger.yaml#/components/responses/BadRequest"
