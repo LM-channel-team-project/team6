@@ -20,6 +20,7 @@ export default function LoginBody(): JSX.Element {
           icon={LoginUserIcon}
           title={LOGIN_EMAIL_TEXT}
           alt={LOGIN_EMAIL_ALT}
+          type="submit"
         />
       </S.ButtonContainer>
       <S.LinkContainer>

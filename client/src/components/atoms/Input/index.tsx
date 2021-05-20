@@ -3,13 +3,28 @@ import * as S from './style';
 
 interface Props {
   type: string;
+  name: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
   placeholder: string;
 }
 
-export default function Input({ type, placeholder }: Props): JSX.Element {
+export default function Input({
+  type,
+  name,
+  value,
+  onChange,
+  placeholder,
+}: Props): JSX.Element {
   return (
     <S.Container>
-      <S.Input type={type} placeholder={placeholder} />
+      <S.Input
+        type={type}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+      />
     </S.Container>
   );
 }
