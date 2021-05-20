@@ -7,6 +7,8 @@ interface Props {
   title: string;
   icon?: string;
   alt?: string;
+  type: 'submit';
+  disabled?: boolean;
 }
 
 SignButton.defaultProps = {
@@ -14,6 +16,7 @@ SignButton.defaultProps = {
   color: null,
   icon: null,
   alt: null,
+  disabled: false,
 };
 
 export default function SignButton({
@@ -22,10 +25,17 @@ export default function SignButton({
   title,
   icon,
   alt,
+  type,
+  disabled,
 }: Props): JSX.Element {
   return (
     <S.Container>
-      <S.Button background={background} color={color}>
+      <S.Button
+        background={background}
+        color={color}
+        type={type}
+        disabled={disabled}
+      >
         {icon ? <S.Icon src={icon} alt={alt} /> : null}
         <S.ButtonTitle>{title}</S.ButtonTitle>
       </S.Button>

@@ -5,6 +5,10 @@ export const LOGIN_URL = '/login';
 export const TEAM_GITHUB_URL =
   'https://github.com/LM-channel-team-project/team6';
 
+// API
+
+export const SIGN_UP_POST_API = 'http://localhost:8000/api/v1/auth/signup';
+
 // LOGIN
 export const LOGIN_LINK_TEXT = 'TEAM 6';
 export const LOGIN_WELCOME_TEXT = '블로그에 오신 것을 환영합니다.';

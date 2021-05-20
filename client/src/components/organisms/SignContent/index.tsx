@@ -2,7 +2,7 @@ import React from 'react';
 import LoginHeader from 'components/molecules/LoginHeader';
 import LoginBody from 'components/molecules/LoginBody';
 import SignUpHeader from 'components/molecules/SignUpHeader';
-import SignUpBody from 'components/molecules/SignUpBody';
+import SignUpFormBody from 'components/molecules/SignUpFormBody';
 import { useLocation } from 'react-router';
 import { LOGIN_URL } from 'commons/constants/string';
 import * as S from './style';
@@ -19,7 +19,7 @@ export default function SignContent(): JSX.Element {
       ) : (
         <>
           <SignUpHeader />
-          <SignUpBody />
+          <SignUpFormBody />
         </>
       )}
     </S.Container>
