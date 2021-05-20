@@ -7,6 +7,7 @@ import Main from 'pages/Main';
 import Login from 'pages/Login';
 import SignUp from 'pages/SignUp';
 import { HOME_URL, LOGIN_URL, SIGN_UP_URL } from 'commons/constants/string';
+import Detail from 'pages/Detail';
 
 function App(): JSX.Element {
   return (
@@ -18,6 +19,7 @@ function App(): JSX.Element {
             <Route exact path={HOME_URL} component={Main} />
             <Route exact path={LOGIN_URL} component={Login} />
             <Route exact path={SIGN_UP_URL} component={SignUp} />
+            <Route path="/detail/:id" component={Detail} />
           </Switch>
         </Router>
       </ThemeProvider>
