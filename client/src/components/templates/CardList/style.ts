@@ -4,5 +4,5 @@ export const List = styled.ul`
   list-style: none;
   display: flex;
   max-width: 1156px;
-  margin: 0 auto;
+  margin: 37px auto 65px;
 `;
