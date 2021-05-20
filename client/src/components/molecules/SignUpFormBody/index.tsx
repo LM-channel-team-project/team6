@@ -13,13 +13,13 @@ import * as S from './style';
 
 export default function SignUpFormBody(): JSX.Element {
   const [inputs, setInputs] = useState({
-    user: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
 
-  const { user, email, password, confirmPassword } = inputs;
+  const { username, email, password, confirmPassword } = inputs;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,7 +36,7 @@ export default function SignUpFormBody(): JSX.Element {
       method: 'post',
       url: SIGN_UP_POST_API,
       data: {
-        user,
+        username,
         email,
         password,
       },
@@ -54,8 +54,8 @@ export default function SignUpFormBody(): JSX.Element {
       <S.Form onSubmit={handleSubmit}>
         <Input
           type="input"
-          name="user"
-          value={user}
+          name="username"
+          value={username}
           onChange={onChange}
           placeholder={PLACEHOLDER_USERNAME}
         />
