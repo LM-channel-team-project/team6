@@ -6,7 +6,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   body {
-    max-width: 1440px;
     margin: auto;
     min-height: 100vh;
     box-sizing: border-box;

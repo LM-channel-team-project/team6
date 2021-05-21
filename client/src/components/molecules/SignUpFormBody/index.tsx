@@ -8,6 +8,7 @@ import {
   PLACEHOLDER_CONFIRM_PW,
   SIGN_UP_POST_API,
 } from 'commons/constants/string';
+import { signUpValidateInput } from 'utils/signUpValidateInput';
 import axios from 'axios';
 import * as S from './style';
 
@@ -20,6 +21,13 @@ export default function SignUpFormBody(): JSX.Element {
   });
 
   const { username, email, password, confirmPassword } = inputs;
+
+  const isEnabled = signUpValidateInput(
+    username,
+    email,
+    password,
+    confirmPassword,
+  );
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,10 +50,10 @@ export default function SignUpFormBody(): JSX.Element {
       },
     })
       .then((res) => {
-        alert(`${res.status}: 회원가입 성공`);
+        alert(`${res.status}: 회원가입 성공`); // eslint-disable-line no-alert
       })
       .catch((error) => {
-        alert(`${error}: 오류발생`);
+        alert(`${error}: 오류발생`); // eslint-disable-line no-alert
       });
   };
 
@@ -85,6 +93,7 @@ export default function SignUpFormBody(): JSX.Element {
           background="#9564FF"
           color="white"
           type="submit"
+          disabled={!isEnabled}
         />
       </S.Form>
     </S.Container>
