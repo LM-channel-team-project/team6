@@ -18,6 +18,7 @@ export const Button = styled.button<ButtonProps>`
     border: 1px solid #9664ff;
   }
   background: ${(props) => props.background || 'white'};
+  background: ${(props) => (props.disabled ? 'gray' : props.background)};
   color: ${(props) => props.color || 'black'};
 `;
 
