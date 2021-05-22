@@ -1,11 +1,11 @@
 get:
-  summary: "특정 유저 정보 조회"
+  summary: "특정 글 조회"
   tags:
-    - Auth
+    - Post
   parameters:
     - in: path
       name: id
-      description: 조회할 유저 ID
+      description: 조회할 글 ID
       type: integer
   responses:
     200:
@@ -20,14 +20,14 @@ get:
                 example: 200
               message:
                 type: string
-                example: 회원 조회 성공
+                example: 글 조회 성공
               success:
                 type: boolean
                 example: true
               data:
                 type: object
                 schema:
-                  $ref: "../../../swagger.yaml#/components/schemas/User"
+                  $ref: "../../../swagger.yaml#/components/schemas/Post"
     400:
       $ref: "../../../swagger.yaml#/components/responses/BadRequest"
     500:
@@ -35,19 +35,19 @@ get:
     600:
       $ref: "../../../swagger.yaml#/components/responses/DBError"
 patch:
-  summary: "유저 정보 수정"
+  summary: "글 수정하기"
   tags:
-    - Auth
+    - Post
   parameters:
     - in: path
       name: id
-      description: 수정할 유저 ID
+      description: 수정할 글 ID
       type: integer
   requestBody:
     content:
       application/json:
         schema:
-          $ref: "../../../swagger.yaml#/components/schemas/User"
+          $ref: "../../../swagger.yaml#/components/schemas/Post"
   responses:
     200:
       description: OK
@@ -61,24 +61,24 @@ patch:
                 example: 200
               message:
                 type: string
-                example: 회원 수정 성공
+                example: 글 수정 성공
               success:
                 type: boolean
                 example: true
               data:
                 type: object
                 schema:
-                  $ref: "../../../swagger.yaml#/components/schemas/User"
+                  $ref: "../../../swagger.yaml#/components/schemas/Post"
     400:
       $ref: "../../../swagger.yaml#/components/responses/BadRequest"
 delete:
-  summary: "유저 회원 탈퇴"
+  summary: "글 삭제"
   tags:
-    - Auth
+    - Post
   parameters:
     - in: path
       name: id
-      description: 삭제할 유저 ID
+      description: 삭제할 글 ID
       type: integer
   responses:
     200:
@@ -93,7 +93,7 @@ delete:
                 example: 200
               message:
                 type: string
-                example: 회원탈퇴 성공
+                example: 글 삭제 성공
               success:
                 type: boolean
                 example: true

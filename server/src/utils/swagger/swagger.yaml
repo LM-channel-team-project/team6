@@ -69,7 +69,8 @@ components:
         createdAt:
           type: string
           description: 글 생성일자
-        hits:
+          example: "2021-05-18T02:31:16.207Z"
+        likes:
           type: number
           description: 글 좋아요 수
           example: 100
@@ -92,7 +93,8 @@ components:
         createdAt:
           type: string
           description: 댓글 생성일자
-        hits:
+          example: "2021-05-18T02:31:16.207Z"
+        likes:
           type: number
           description: 댓글 좋아요 수
           example: 100
@@ -115,6 +117,8 @@ components:
           type: number
         message:
           type: string
+        success:
+          type: boolean
         data:
           type: object
   responses:
@@ -127,6 +131,7 @@ components:
           example:
             status: 400
             message: 잘못된 요청
+            success: false
     InternalServerError:
       description: 서버 에러
       content:
@@ -136,6 +141,7 @@ components:
           example:
             status: 500
             message: 서버 내부 오류
+            success: false
     DBError:
       description: 데이터베이스 에러
       content:
@@ -145,3 +151,4 @@ components:
           example:
             status: 600
             message: 데이터베이스 에러
+            success: false

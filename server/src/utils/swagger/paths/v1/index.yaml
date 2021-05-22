@@ -12,3 +12,7 @@
 /v1/auth/oauth/github:
   $ref: "./auth/oauth-github.yaml"
 # post
+/v1/post:
+  $ref: "./post/post.yaml"
+/v1/post/{id}:
+  $ref: "./post/post-id.yaml"

@@ -21,6 +21,9 @@ post:
               message:
                 type: string
                 example: 회원가입 성공
+              success:
+                type: boolean
+                example: true
               data:
                 type: object
                 schema:

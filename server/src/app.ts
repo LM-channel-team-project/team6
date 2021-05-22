@@ -16,6 +16,7 @@ import { createConnection, getConnection } from "typeorm";
 import swaggerUi from "swagger-ui-express";
 import Yaml from "yamljs";
 
+import { stream } from "@utils/winston";
 import router from "@routes/index";
 import passportConfig from "@utils/passport.config";
 import { error404, errorHandler } from "@utils/errorHandler";
@@ -26,7 +27,9 @@ const swaggerDocs = Yaml.load(path.join(__dirname, "../build/swagger.yaml"));
 
 // app configuration
 app.use(
-  process.env.NODE_ENV === "production" ? morgan("combined") : morgan("dev"),
+  process.env.NODE_ENV === "production"
+    ? morgan("combined", { stream })
+    : morgan("dev", { stream }),
 );
 app.use(express.static(path.join(__dirname, "src/public")));
 app.use(express.json());

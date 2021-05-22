@@ -45,10 +45,10 @@ router.post(
 );
 
 // - User Update, User Delete, Find One User
-router.get("/:id", isAuthenticated, AuthController.findOne);
+router.get("/:id", isAuthenticated, AuthController.findUser);
 router.patch("/:id", isAuthenticated, AuthController.updateUserGeneral);
 router.delete("/:id", isAuthenticated, AuthController.deleteUser);
 
-router.get("/", isAuthenticated, AuthController.findAll);
+router.get("/", isAuthenticated, AuthController.findUsers);
 
 export default router;

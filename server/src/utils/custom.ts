@@ -75,12 +75,14 @@ export const message = {
 export class CustomError extends Error {
   status: number;
   message: string;
+  success: boolean;
   data?: any;
 
   constructor(status: number, message: string, data?: any) {
     super(message);
     this.status = status;
     this.message = message;
+    this.success = false;
     this.data = data;
   }
 }
@@ -88,6 +90,7 @@ export class CustomError extends Error {
 interface APIResponse {
   status: number;
   message: string;
+  success: boolean;
   data?: any;
 }
 
@@ -95,11 +98,13 @@ interface APIResponse {
 export const JSONResponse = (
   statusCode: number,
   statusMessage: string,
+  success: boolean,
   data?: any,
 ): APIResponse => {
   return {
     status: statusCode,
     message: statusMessage,
+    success: success,
     data: data,
   };
 };
