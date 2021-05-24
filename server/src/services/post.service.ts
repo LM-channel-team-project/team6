@@ -1,11 +1,11 @@
 import { Between, getRepository } from "typeorm";
 import { Post } from "@models/entity/Post";
-import * as custom from "@utils/custom";
+import { resJSON, resMSG, resError, getWeek } from "@utils/module";
 
 // Get Posts
 export const findPosts = async (postQuery: any) => {
   const { filter, page, limit } = postQuery;
-  const week = custom.getWeek();
+  const week = getWeek();
 
   var posts: Post[];
 
@@ -63,7 +63,7 @@ export const findPosts = async (postQuery: any) => {
   }
 
   if (!posts) {
-    throw new custom.CustomError(400, custom.message.POST_FIND_ALL_FAIL);
+    throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
   }
   return posts;
 };
@@ -74,7 +74,7 @@ export const findPost = async (postId: string) => {
     relations: ["user"],
   });
   if (!post) {
-    throw new custom.CustomError(400, custom.message.POST_NO_IDX);
+    throw new resError(400, resMSG.POST_NOT_EXIST_POST);
   }
   const postRecord = getRepository(Post).merge(post, { views: post.views + 1 });
   const result = await getRepository(Post).save(postRecord);
@@ -99,7 +99,7 @@ export const updatePost = async (postBody: Post, postId: string) => {
     relations: ["user"],
   });
   if (!post) {
-    throw new custom.CustomError(400, custom.message.POST_NO_IDX);
+    throw new resError(400, resMSG.POST_NOT_EXIST_POST);
   }
   const postRecord = getRepository(Post).merge(post, postBody);
   const result = await getRepository(Post).save(postRecord);
@@ -112,7 +112,7 @@ export const deletePost = async (postId: string) => {
     relations: ["user"],
   });
   if (!post) {
-    throw new custom.CustomError(400, custom.message.POST_NO_IDX);
+    throw new resError(400, resMSG.POST_NOT_EXIST_POST);
   }
   const result = await getRepository(Post).delete(postId);
   return result;
@@ -124,7 +124,7 @@ export const clickLikePost = async (postId: string) => {
     relations: ["user"],
   });
   if (!post) {
-    throw new custom.CustomError(400, custom.message.POST_NO_IDX);
+    throw new resError(400, resMSG.POST_NOT_EXIST_POST);
   }
   const postRecord = getRepository(Post).merge(post, { likes: post.likes + 1 });
   const result = await getRepository(Post).save(postRecord);
