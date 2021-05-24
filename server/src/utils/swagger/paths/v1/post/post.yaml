@@ -23,15 +23,12 @@ get:
           schema:
             type: object
             properties:
-              status:
-                type: number
-                example: 200
-              message:
-                type: string
-                example: 글 목록 조회 성공
               success:
                 type: boolean
                 example: true
+              message:
+                type: string
+                example: 글 목록 조회 성공
               data:
                 type: array
                 items:
@@ -56,15 +53,12 @@ post:
           schema:
             type: object
             properties:
-              status:
-                type: number
-                example: 200
-              message:
-                type: string
-                example: 글 생성 성공
               success:
                 type: boolean
                 example: true
+              message:
+                type: string
+                example: 글 생성 성공
               data:
                 type: object
                 schema:

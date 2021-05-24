@@ -1,7 +1,12 @@
-get:
-  summary: "유저 로그아웃"
+post:
+  summary: "로컬 로그인"
   tags:
     - Auth
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../../swagger.yaml#/components/schemas/User"
   responses:
     200:
       description: OK
@@ -15,7 +20,9 @@ get:
                 example: true
               message:
                 type: string
-                example: 로그아웃 성공
-
+                example: 로그인 성공
+              data:
+                type: string
+                example: haWwiOiJhZG1pbjJAZ2...Token
     400:
       $ref: "../../../swagger.yaml#/components/responses/BadRequest"

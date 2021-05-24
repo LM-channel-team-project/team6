@@ -15,15 +15,12 @@ post:
           schema:
             type: object
             properties:
-              status:
-                type: number
-                example: 201
-              message:
-                type: string
-                example: 회원가입 성공
               success:
                 type: boolean
                 example: true
+              message:
+                type: string
+                example: 회원가입 성공
               data:
                 type: object
                 schema:

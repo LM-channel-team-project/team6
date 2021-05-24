@@ -3,6 +3,8 @@
   $ref: "./auth/auth.yaml"
 /v1/auth/{id}:
   $ref: "./auth/auth-id.yaml"
+/v1/auth/signin:
+  $ref: "./auth/auth-signin.yaml"
 /v1/auth/signup:
   $ref: "./auth/auth-signup.yaml"
 /v1/auth/logout:
