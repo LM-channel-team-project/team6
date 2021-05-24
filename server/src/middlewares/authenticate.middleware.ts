@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import * as custom from "@utils/custom";
+import { resMSG, resError } from "@utils/module";
 
 // Authenticated check
 export const isAuthenticated = (
@@ -10,10 +10,7 @@ export const isAuthenticated = (
   if (req.isAuthenticated()) {
     next();
   } else {
-    const error = new custom.CustomError(
-      custom.status.FORBIDDEN,
-      custom.message.USER_NOT_AUTHENTICATED,
-    );
+    const error = new resError(403, resMSG.AUTH_NOT_AUTHENTICATED);
     next(error);
   }
 };
@@ -27,10 +24,7 @@ export const isNotAuthenticated = (
   if (!req.isAuthenticated()) {
     next();
   } else {
-    const error = new custom.CustomError(
-      custom.status.FORBIDDEN,
-      custom.message.USER_AUTHENTICATED,
-    );
+    const error = new resError(400, resMSG.AUTH_AUTHENTICATED);
     next(error);
   }
 };

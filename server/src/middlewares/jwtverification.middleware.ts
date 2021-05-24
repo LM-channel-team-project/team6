@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import * as custom from "@utils/custom";
+import { resMSG, resError } from "@utils/module";
 import { findUser } from "@services/auth.service";
 import { verifyToken } from "@utils/jwt";
 
@@ -13,10 +13,7 @@ const verificationUser = async (
   } = req;
 
   if (!authorization) {
-    const error = new custom.CustomError(
-      403,
-      custom.message.USER_NOT_AUTHENTICATED,
-    );
+    const error = new resError(403, resMSG.AUTH_NOT_AUTHENTICATED);
     next(error);
   } else {
     try {
@@ -26,20 +23,13 @@ const verificationUser = async (
       const user = await findUser(id);
 
       if (!user) {
-        const error = new custom.CustomError(
-          400,
-          custom.message.USER_FIND_ONE_FAIL,
-        );
+        const error = new resError(400, resMSG.AUTH_FIND_ONE_FAIL);
         next(error);
       }
       req.user = { id, nickname, username, email, oauthId, provider };
       return next();
     } catch (err) {
-      const error = new custom.CustomError(
-        400,
-        "JWT 토큰이 만료되었습니다.",
-        err,
-      );
+      const error = new resError(400, resMSG.AUTH_EXPIRED_TOKEN, err);
       next(error);
     }
   }
