@@ -1,7 +1,7 @@
 import { Strategy as localStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 
-import * as custom from "@utils/custom";
+import { resMSG } from "@utils/module";
 import { getRepository } from "typeorm";
 import { User } from "@models/entity/User";
 
@@ -18,14 +18,14 @@ const localVerify = async (
     user = await getRepository(User).findOne({ where: { email } });
     if (!user)
       return done(null, false, {
-        message: custom.message.USER_LOGIN_FIND_USER_FAIL,
+        message: resMSG.AUTH_NOT_EXIST_USER,
       });
 
     const result = await bcrypt.compare(password, user.password);
 
     if (!result)
       return done(null, false, {
-        message: custom.message.USER_LOGIN_MISS_MATCH_PW,
+        message: resMSG.AUTH_MISS_MATCH_PW,
       });
   } catch (err) {
     done(err);
