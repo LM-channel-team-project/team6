@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
+import { createToken, verifyToken } from "@utils/jwt";
 import * as custom from "@utils/custom";
 import * as AuthService from "@services/auth.service";
+import passport from "passport";
 
 // Get Users
 export const findUsers = async (
@@ -162,9 +164,125 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // Callbacks
-export const callbacks = (req: Request, res: Response) => {
-  // change this code
-  res
-    .status(200)
-    .json(custom.JSONResponse(200, custom.message.USER_LOGIN_SUCCESS, true));
+export const githubCallbacks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  passport.authenticate(
+    "github",
+    { session: false },
+    async (err: any, user: any, info: any) => {
+      if (err || !user) {
+        const error = new custom.CustomError(
+          400,
+          custom.message.USER_LOGIN_FAIL,
+        );
+        next(error);
+      }
+
+      req.login(user, (err) => {
+        if (err) {
+          const error = new custom.CustomError(
+            400,
+            custom.message.USER_LOGIN_FAIL,
+          );
+          next(error);
+        }
+      });
+
+      const token = await createToken(user);
+      const clientURL =
+        process.env.NODE_ENV === "production"
+          ? process.env.CLIENT_URL_PRODUCTION
+          : process.env.CLIENT_URL_DEVELOPMENT;
+
+      return res
+        .status(200)
+        .redirect(`${clientURL}/login?access_token=${token}`);
+    },
+  )(req, res);
+};
+
+export const kakaoCallbacks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  passport.authenticate(
+    "kakao",
+    { session: false },
+    async (err: any, user: any, info: any) => {
+      if (err || !user) {
+        const error = new custom.CustomError(
+          400,
+          custom.message.USER_LOGIN_FAIL,
+        );
+        next(error);
+      }
+
+      req.login(user, (err) => {
+        if (err) {
+          const error = new custom.CustomError(
+            400,
+            custom.message.USER_LOGIN_FAIL,
+          );
+          next(error);
+        }
+      });
+
+      const token = await createToken(user);
+      const clientURL =
+        process.env.NODE_ENV === "production"
+          ? process.env.CLIENT_URL_PRODUCTION
+          : process.env.CLIENT_URL_DEVELOPMENT;
+
+      return res
+        .status(200)
+        .redirect(`${clientURL}/login?access_token=${token}`);
+    },
+  )(req, res);
+};
+
+export const localCallbacks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  passport.authenticate(
+    "local",
+    { session: false },
+    async (err: any, user: any, info: any) => {
+      if (err || !user) {
+        const error = new custom.CustomError(
+          400,
+          custom.message.USER_LOGIN_FAIL,
+        );
+        next(error);
+      }
+
+      req.login(user, (err) => {
+        if (err) {
+          const error = new custom.CustomError(
+            400,
+            custom.message.USER_LOGIN_FAIL,
+          );
+          next(error);
+        }
+      });
+
+      const token = await createToken(user);
+
+      return res
+        .status(200)
+        .json(
+          custom.JSONResponse(
+            200,
+            custom.message.USER_LOGIN_SUCCESS,
+            true,
+            token,
+          ),
+        );
+    },
+  )(req, res);
 };

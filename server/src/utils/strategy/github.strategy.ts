@@ -42,7 +42,6 @@ const githubVerify = async (
       const newUser = getRepository(User).create({
         email,
         nickname: displayName,
-        password: accessToken,
         username: username,
         oauthId: id,
         provider: provider,
