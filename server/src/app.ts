@@ -19,7 +19,7 @@ import Yaml from "yamljs";
 import { stream } from "@utils/winston";
 import router from "@routes/index";
 import passportConfig from "@utils/passport.config";
-import { error404, errorHandler } from "@utils/errorHandler";
+import { errorHandler, errorNotFound } from "@utils/errorHandler";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -65,7 +65,7 @@ app.use("/api/v1", router); // v1
 app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // error handlers
-app.use(error404);
+app.use(errorNotFound);
 app.use(errorHandler);
 
 // server run/stop function
