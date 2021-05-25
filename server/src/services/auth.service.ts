@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import { getRepository } from "typeorm";
 import { User } from "@models/entity/User";
-import * as custom from "@utils/custom";
+import { resJSON, resMSG, resError } from "@utils/module";
 
 // Get Users
 export const findUsers = async () => {
   const users = await getRepository(User).find();
   if (!users) {
-    throw new custom.CustomError(400, custom.message.USER_FIND_ONE_FAIL);
+    throw new resError(400, resMSG.AUTH_FIND_ONE_FAIL);
   }
   return users;
 };
@@ -16,7 +16,7 @@ export const findUsers = async () => {
 export const findUser = async (userId: string) => {
   const user = await getRepository(User).findOne(userId);
   if (!user) {
-    throw new custom.CustomError(400, custom.message.USER_FIND_ONE_FAIL);
+    throw new resError(400, resMSG.AUTH_FIND_ONE_FAIL);
   }
   return user;
 };
@@ -27,7 +27,7 @@ export const createUser = async (userBody: User) => {
   const user = await getRepository(User).findOne({ where: { email } });
 
   if (user) {
-    throw new custom.CustomError(400, custom.message.USER_ALREADY_USED_EMAIL);
+    throw new resError(400, resMSG.AUTH_ALREADY_USED_EMAIL);
   }
 
   const salt = await bcrypt.genSalt();
@@ -50,7 +50,7 @@ export const updateUserGeneral = async (userBody: User, userId: string) => {
   const user = await getRepository(User).findOne({ where: { id: userId } });
 
   if (!user) {
-    throw new custom.CustomError(400, custom.message.USER_LOGIN_FIND_USER_FAIL);
+    throw new resError(400, resMSG.AUTH_NOT_EXIST_USER);
   }
   const userRecord = getRepository(User).create({
     ...user,
@@ -69,7 +69,7 @@ export const updateUserPassword = async (userBody: User, userId: string) => {
   const user = await getRepository(User).findOne({ where: { id: userId } });
 
   if (!user) {
-    throw new custom.CustomError(400, custom.message.USER_LOGIN_FIND_USER_FAIL);
+    throw new resError(400, resMSG.AUTH_NOT_EXIST_USER);
   }
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -88,7 +88,7 @@ export const deleteUser = async (userId: string) => {
   const result = await getRepository(User).delete(userId);
 
   if (!result) {
-    throw new custom.CustomError(400, custom.message.USER_WITHDRAW_FAIL);
+    throw new resError(400, resMSG.AUTH_DELETE_FAIL);
   }
   return result;
 };

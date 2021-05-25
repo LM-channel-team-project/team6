@@ -1,54 +1,35 @@
 import express from "express";
 import passport from "passport";
-import { isAuthenticated, isNotAuthenticated } from "@middlewares/authenticate";
+import verificationUser from "@middlewares/jwtverification.middleware";
 import { AuthController } from "@controllers/v1";
-/*
-  URL: /api/auth
-*/
 
 const router = express.Router();
 
-// OAuth
-// - Kakao
+// Oauth - Kakao
 router.get(
   "/oauth/kakao",
-  isNotAuthenticated,
-  passport.authenticate("kakao", { scope: ["profile"] }),
+  passport.authenticate("kakao", { scope: ["profile"], session: false }),
 );
-router.get(
-  "/oauth/kakao/callback",
-  passport.authenticate("kakao"),
-  AuthController.callbacks,
-);
+router.get("/oauth/kakao/callback", AuthController.authKakaoLogin);
 
-// - Github
+// Oauth - Github
 router.get(
   "/oauth/github",
-  isNotAuthenticated,
-  passport.authenticate("github", { scope: ["profile"] }),
+  passport.authenticate("github", { scope: ["profile"], session: false }),
 );
-router.get(
-  "/oauth/github/callback",
-  passport.authenticate("github"),
-  AuthController.callbacks,
-);
+router.get("/oauth/github/callback", AuthController.authGithubLogin);
 
 // Local
 // - Login, SignUp, Logout
-router.get("/logout", isAuthenticated, AuthController.logout);
-router.post("/signup", isNotAuthenticated, AuthController.createUser);
-router.post(
-  "/",
-  isNotAuthenticated,
-  passport.authenticate("local"),
-  AuthController.callbacks,
-);
+router.get("/logout", verificationUser, AuthController.authLogout);
+router.post("/signin", AuthController.authLocalLogin);
+router.post("/signup", AuthController.authCreateUser);
 
 // - User Update, User Delete, Find One User
-router.get("/:id", isAuthenticated, AuthController.findUser);
-router.patch("/:id", isAuthenticated, AuthController.updateUserGeneral);
-router.delete("/:id", isAuthenticated, AuthController.deleteUser);
+router.get("/:id", verificationUser, AuthController.authFindOne);
+router.patch("/:id", verificationUser, AuthController.authUpdateUserGeneral);
+router.delete("/:id", verificationUser, AuthController.authDeleteUser);
 
-router.get("/", isAuthenticated, AuthController.findUsers);
+router.get("/", verificationUser, AuthController.authFindAll);
 
 export default router;

@@ -15,15 +15,12 @@ get:
           schema:
             type: object
             properties:
-              status:
-                type: number
-                example: 200
-              message:
-                type: string
-                example: 회원 조회 성공
               success:
                 type: boolean
                 example: true
+              message:
+                type: string
+                example: 회원 조회 성공
               data:
                 type: object
                 schema:
@@ -56,15 +53,12 @@ patch:
           schema:
             type: object
             properties:
-              status:
-                type: number
-                example: 200
-              message:
-                type: string
-                example: 회원 수정 성공
               success:
                 type: boolean
                 example: true
+              message:
+                type: string
+                example: 회원 수정 성공
               data:
                 type: object
                 schema:
@@ -88,14 +82,11 @@ delete:
           schema:
             type: object
             properties:
-              status:
-                type: number
-                example: 200
-              message:
-                type: string
-                example: 회원탈퇴 성공
               success:
                 type: boolean
                 example: true
+              message:
+                type: string
+                example: 회원탈퇴 성공
     400:
       $ref: "../../../swagger.yaml#/components/responses/BadRequest"

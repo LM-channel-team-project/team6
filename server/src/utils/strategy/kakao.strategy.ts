@@ -43,7 +43,6 @@ const kakaoVerify = async (
     } else {
       const newUser = getRepository(User).create({
         email,
-        password: accessToken,
         nickname: username,
         username: username,
         oauthId: id,
