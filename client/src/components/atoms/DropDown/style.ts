@@ -1,49 +1,62 @@
 import styled, { css } from 'styled-components';
 
+interface DropDownProps {
+  isMenuClicked: boolean;
+}
+
+interface DropDownContentProps {
+  color: string;
+  bottomBorder: boolean;
+}
+
 export const DropDown = styled.div`
-  border: 5px solid white;
-  width: 100px;
-  height: 64px;
-  background-color: white;
-
-
-  border-radius: 10px;
- 
-text-align: center;
-
- 
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
+  animation: fadein 0.9s;
+
+  ${(props: DropDownProps) =>
+    !props.isMenuClicked &&
+    css`
+      display: none;
+    `};
+
+  width: 86px;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+  text-align: center;
 `;
 export const DropDownContent = styled.div`
-  ${({ color }) => {
-    return css`
-      color: ${color};
-    `;
-  }}
-  &:not(:last-child) {
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.09);
-  }
-  font-weight: 700;
-`;
+  ${(props: DropDownContentProps) =>
+    css`
+      color: ${props.color};
+    `};
 
-export const Container = styled.div`
-  &::before {
-    content: '';
-    display: relative;
+  ${(props: DropDownContentProps) =>
+    props.bottomBorder &&
+    css`
+      :after {
+        content: 'space';
+        color: white;
+        display: block;
+        width: 62px;
+        border-bottom: 1px solid #bcbcbc;
 
-    margin-top: 10px;
-    margin-left: 60%;
-    border-width: 15px;
-    border-style: solid;
-    border-color: transparent transparent white transparent;
-  }
-  display: inline-block;
-  position: relative;
-  top: 40px;
-  left: 40px;
-  z-index: 1;
-`;
+        margin: auto;
+        margin-
+      }
+    `};
 
-export const TriangleBlock = styled.div`
-  height: 10px;
+  font-family: Roboto;
+  font-weight: bold;
+
+  font-size: 11px;
+  padding: 5px;
+  cursor: pointer;
 `;
