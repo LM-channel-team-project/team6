@@ -9,14 +9,12 @@ export default function HamburgurMenu({
   isMenuClicked,
   setIsMenuClicked,
 }: Props): JSX.Element {
-  // event type 다시 설정
-  function onClickMenu(e: any): void {
+  function onClickMenu(): void {
     setIsMenuClicked(!isMenuClicked);
   }
   return (
-    // <S.Container isMenuClicked={isMenuClicked}>
     <S.ListsWrapper
-      onClick={(e) => onClickMenu(e)}
+      onClick={onClickMenu}
       isMenuClicked={isMenuClicked}
     >
       <S.ListElement />

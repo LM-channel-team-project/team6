@@ -18,7 +18,7 @@ export const DropDown = styled.div`
       opacity: 1;
     }
   }
-  animation: fadein 0.9s;
+  animation: fadein 0.5s;
 
   ${(props: DropDownProps) =>
     !props.isMenuClicked &&
@@ -49,7 +49,6 @@ export const DropDownContent = styled.div`
         border-bottom: 1px solid #bcbcbc;
 
         margin: auto;
-        margin-
       }
     `};
 

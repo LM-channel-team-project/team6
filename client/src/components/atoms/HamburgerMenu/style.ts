@@ -42,8 +42,8 @@ export const ListElement = styled.li`
   position: absolute;
   left: 0;
   background: black;
-  width: 100%;
-  height: 5px;
+  width: 90%;
+  height: 4px;
   transform: translateY(-50%);
-  transition: 0.9s;
+  transition: 0.5s;
 `;
