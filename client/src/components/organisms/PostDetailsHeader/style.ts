@@ -13,7 +13,7 @@ export const Container = styled.div<Props>`
 `;
 
 export const TitleBox = styled.div`
-  padding-bottom: 17px;
+  padding-bottom: 40px;
 `;
 
 export const Title = styled.h2`

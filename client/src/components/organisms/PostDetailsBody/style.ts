@@ -1,6 +1,20 @@
 import styled from 'styled-components';
 
+export const Box = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 38px;
+  margin: 31px auto 33px;
+  border-radius: 10px;
+  border: 1px solid #dbdbdb;
+  background-color: #f1f4f9;
+`;
+
 export const Text = styled.p`
+  padding-bottom: 60px;
+  border-bottom: 1px solid #dbdbdb;
   font-size: 18px;
   line-height: 1.5;
 `;
@@ -10,27 +24,16 @@ export const Img = styled.img`
 `;
 
 export const ImgBox = styled.div`
-  width: 630px;
-  height: 341px;
-  margin: 59px auto 32px;
-`;
-
-export const Info = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  width: 170px;
-  height: 30px;
+  max-width: 630px;
+  max-height: 341px;
+  margin: 64px auto 32px;
 `;
 
 export const Container = styled.div`
   position: relative;
-  width: 1156px;
+  max-width: 1154px;
   min-height: 500px;
-  margin: 27px auto 0;
+  margin: 0 auto;
   padding: 11px 126px;
   box-sizing: border-box;
   background: #fff;
