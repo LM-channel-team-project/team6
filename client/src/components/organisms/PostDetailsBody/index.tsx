@@ -1,22 +1,13 @@
 import React from 'react';
-import Category from 'components/atoms/Category';
-import Like from 'components/molecules/Like';
 import User from 'components/molecules/User';
 import detailImg from 'assets/image/detail-img.png';
+import Like from 'components/atoms/Like';
 import * as S from './style';
-
-const categories = ['javascript', 'react'];
 
 function PostDetailsBody(): JSX.Element {
   return (
     <S.Container>
-      {categories.map((category) => (
-        <Category key={category} categories={category} />
-      ))}
-      <S.Info>
-        <Like />
-        <User nickColor="#000" />
-      </S.Info>
+      <User />
       <S.ImgBox>
         <S.Img src={detailImg} />
       </S.ImgBox>
@@ -29,6 +20,9 @@ function PostDetailsBody(): JSX.Element {
         안녕하세요. 2020 신입 개발자 블라인드 공채로 입사한 Oli입니다.
         컴퓨터공학 전공은 아니나 평소에
       </S.Text>
+      <S.Box>
+        <Like count={2629} />
+      </S.Box>
     </S.Container>
   );
 }
