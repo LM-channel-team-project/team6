@@ -7,6 +7,7 @@ import {
   SIGN_UP_LINK_TEXT,
   LOGIN_EMAIL_TEXT,
   LOGIN_EMAIL_ALT,
+  LOGIN_EMAIL_URL,
 } from 'commons/constants/string';
 import SignButton from 'components/atoms/SignButton';
 import LoginUserIcon from 'assets/image/login-user.png';
@@ -20,6 +21,7 @@ export default function LoginBody(): JSX.Element {
           icon={LoginUserIcon}
           title={LOGIN_EMAIL_TEXT}
           alt={LOGIN_EMAIL_ALT}
+          url={LOGIN_EMAIL_URL}
           type="submit"
         />
       </S.ButtonContainer>

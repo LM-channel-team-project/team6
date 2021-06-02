@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as S from './style';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   alt?: string;
   type: 'submit';
   disabled?: boolean;
+  url?: string;
 }
 
 SignButton.defaultProps = {
@@ -17,6 +19,7 @@ SignButton.defaultProps = {
   icon: null,
   alt: null,
   disabled: false,
+  url: null,
 };
 
 export default function SignButton({
@@ -27,18 +30,33 @@ export default function SignButton({
   alt,
   type,
   disabled,
+  url,
 }: Props): JSX.Element {
   return (
     <S.Container>
-      <S.Button
-        background={background}
-        color={color}
-        type={type}
-        disabled={disabled}
-      >
-        {icon ? <S.Icon src={icon} alt={alt} /> : null}
-        <S.ButtonTitle>{title}</S.ButtonTitle>
-      </S.Button>
+      {url ? (
+        <Link to={url}>
+          <S.Button
+            background={background}
+            color={color}
+            disabled={disabled}
+            type={type}
+          >
+            {icon ? <S.Icon src={icon} alt={alt} /> : null}
+            <S.ButtonTitle>{title}</S.ButtonTitle>
+          </S.Button>
+        </Link>
+      ) : (
+        <S.Button
+          background={background}
+          color={color}
+          disabled={disabled}
+          type={type}
+        >
+          {icon ? <S.Icon src={icon} alt={alt} /> : null}
+          <S.ButtonTitle>{title}</S.ButtonTitle>
+        </S.Button>
+      )}
     </S.Container>
   );
 }

@@ -4,7 +4,7 @@ import InternalLink from 'components/atoms/InternalLink';
 import {
   SIGN_UP_ALREADY_SIGN_UP_TEXT,
   LOGIN_URL,
-  LOGIN_TEXT,
+  LOGIN_TITLE,
 } from 'commons/constants/string';
 import * as S from './style';
 
@@ -13,7 +13,7 @@ export default function SignUpHeader(): JSX.Element {
     <S.Container>
       <S.LinkContentWrapper>
         <BasicText text={SIGN_UP_ALREADY_SIGN_UP_TEXT} /> &nbsp;
-        <InternalLink href={LOGIN_URL} text={LOGIN_TEXT} />
+        <InternalLink href={LOGIN_URL} text={LOGIN_TITLE} />
       </S.LinkContentWrapper>
     </S.Container>
   );

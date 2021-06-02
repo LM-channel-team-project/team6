@@ -1,11 +1,15 @@
 import React from 'react';
-import { LOGIN_TEXT } from 'commons/constants/string';
 import * as S from './style';
 
-export default function LoginTitle(): JSX.Element {
+interface Props {
+  title: string;
+  fontSize: string;
+}
+
+export default function LoginTitle({ title, fontSize }: Props): JSX.Element {
   return (
     <S.Container>
-      <S.Title>{LOGIN_TEXT}</S.Title>
+      <S.Title fontSize={fontSize}>{title}</S.Title>
     </S.Container>
   );
 }
