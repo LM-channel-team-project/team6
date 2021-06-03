@@ -2,19 +2,24 @@
 export const HOME_URL = '/';
 export const SIGN_UP_URL = '/signup';
 export const LOGIN_URL = '/login';
+export const LOGIN_EMAIL_URL = '/login-email';
 export const TEAM_GITHUB_URL =
   'https://github.com/LM-channel-team-project/team6';
 
 // API
-
 export const SIGN_UP_POST_API = 'http://localhost:8000/api/v1/auth/signup';
+export const LOCAL_LOGIN_POST_API = 'http://localhost:8000/api/v1/auth/signin';
 
 // LOGIN
 export const LOGIN_LINK_TEXT = 'TEAM 6';
 export const LOGIN_WELCOME_TEXT = '블로그에 오신 것을 환영합니다.';
-export const LOGIN_TEXT = '로그인';
+export const LOGIN_TITLE = '로그인';
 export const LOGIN_EMAIL_TEXT = '이메일로 로그인';
 export const LOGIN_EMAIL_ALT = 'Email Login';
+
+// LOGIN EMAIL
+export const LOGIN_EMAIL_TITLE = '이메일로 로그인';
+export const LOGIN_EMAIL_BACK_TEXT = '다른방법으로 로그인하기';
 
 // SIGN UP
 export const SIGN_UP_LINK_TEXT = '회원가입';
