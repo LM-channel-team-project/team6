@@ -14,6 +14,7 @@ import {
 } from 'commons/constants/string';
 import Detail from 'pages/Detail';
 import LoginEmail from 'pages/LoginEmail';
+import NotFound from 'pages/NotFound';
 
 function App(): JSX.Element {
   return (
@@ -27,6 +28,7 @@ function App(): JSX.Element {
             <Route path={LOGIN_EMAIL_URL} component={LoginEmail} />
             <Route path={SIGN_UP_URL} component={SignUp} />
             <Route path="/detail/:id" component={Detail} />
+            <Route component={NotFound} />
           </Switch>
         </Router>
       </ThemeProvider>
