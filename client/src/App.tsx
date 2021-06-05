@@ -8,6 +8,7 @@ import Login from 'pages/Login';
 import SignUp from 'pages/SignUp';
 import { HOME_URL, LOGIN_URL, SIGN_UP_URL } from 'commons/constants/string';
 import Detail from 'pages/Detail';
+import NotFound from 'pages/NotFound';
 
 function App(): JSX.Element {
   return (
@@ -20,6 +21,7 @@ function App(): JSX.Element {
             <Route path={LOGIN_URL} component={Login} />
             <Route path={SIGN_UP_URL} component={SignUp} />
             <Route path="/detail/:id" component={Detail} />
+            <Route component={NotFound} />
           </Switch>
         </Router>
       </ThemeProvider>
