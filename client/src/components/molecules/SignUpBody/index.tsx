@@ -7,12 +7,15 @@ import {
   PLACEHOLDER_PW,
   PLACEHOLDER_CONFIRM_PW,
   SIGN_UP_POST_API,
+  LOGIN_EMAIL_URL,
 } from 'commons/constants/string';
 import { signUpValidateInput } from 'utils/signUpValidateInput';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import * as S from './style';
 
 export default function SignUpBody(): JSX.Element {
+  const history = useHistory();
   const [inputs, setInputs] = useState({
     username: '',
     email: '',
@@ -51,6 +54,7 @@ export default function SignUpBody(): JSX.Element {
     })
       .then((res) => {
         alert(`${res.status}: 회원가입 성공`); // eslint-disable-line no-alert
+        history.push(LOGIN_EMAIL_URL);
       })
       .catch((error) => {
         alert(`${error}: 오류발생`); // eslint-disable-line no-alert

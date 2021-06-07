@@ -19,7 +19,7 @@ export const LOGIN_EMAIL_ALT = 'Email Login';
 
 // LOGIN EMAIL
 export const LOGIN_EMAIL_TITLE = '이메일로 로그인';
-export const LOGIN_EMAIL_BACK_TEXT = '다른방법으로 로그인하기';
+export const LOGIN_EMAIL_BACK_TEXT = '다른 방법으로 로그인하기';
 
 // SIGN UP
 export const SIGN_UP_LINK_TEXT = '회원가입';
