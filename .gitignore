@@ -43,6 +43,8 @@ server/.env.development.local
 server/.env.production.local
 server/.env.test.local
 
+server/uploads
+
 # cache
 .cache
 .cache/

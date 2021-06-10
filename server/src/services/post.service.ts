@@ -4,63 +4,89 @@ import { resJSON, resMSG, resError, getWeek } from "@utils/module";
 
 // Get Posts
 export const findPosts = async (postQuery: any) => {
-  const { filter, page, limit } = postQuery;
+  const { page, limit } = postQuery;
+
+  const posts = await getRepository(Post).find({
+    relations: ["user"],
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  if (!posts) {
+    throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+  }
+  return posts;
+};
+
+export const findPostsByWeek = async (postQuery: any) => {
+  const { page, limit } = postQuery;
   const week = getWeek();
 
-  var posts: Post[];
+  const posts = await getRepository(Post).find({
+    relations: ["user"],
+    where: {
+      createdAt: Between(week[0], week[1]),
+    },
+    order: {
+      likes: "DESC",
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
 
-  switch (filter) {
-    case "week":
-      posts = await getRepository(Post).find({
-        relations: ["user"],
-        where: {
-          createdAt: Between(week[0], week[1]),
-        },
-        order: {
-          likes: "DESC",
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      break;
-    case "view":
-      posts = await getRepository(Post).find({
-        relations: ["user"],
-        order: {
-          views: "DESC",
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      break;
-    case "like":
-      posts = await getRepository(Post).find({
-        relations: ["user"],
-        order: {
-          likes: "DESC",
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      break;
-    case "latest":
-      posts = await getRepository(Post).find({
-        relations: ["user"],
-        order: {
-          createdAt: "DESC",
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      break;
-    default:
-      posts = await getRepository(Post).find({
-        relations: ["user"],
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-      break;
+  if (!posts) {
+    throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
   }
+  return posts;
+};
+
+export const findPostsByView = async (postQuery: any) => {
+  const { page, limit } = postQuery;
+
+  const posts = await getRepository(Post).find({
+    relations: ["user"],
+    order: {
+      views: "DESC",
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  if (!posts) {
+    throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+  }
+  return posts;
+};
+
+export const findPostsByLike = async (postQuery: any) => {
+  const { page, limit } = postQuery;
+
+  const posts = await getRepository(Post).find({
+    relations: ["user"],
+    order: {
+      likes: "DESC",
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  if (!posts) {
+    throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+  }
+  return posts;
+};
+
+export const findPostsByLatest = async (postQuery: any) => {
+  const { page, limit } = postQuery;
+
+  const posts = await getRepository(Post).find({
+    relations: ["user"],
+    order: {
+      createdAt: "DESC",
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
 
   if (!posts) {
     throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
@@ -82,12 +108,19 @@ export const findPost = async (postId: string) => {
 };
 
 // Create Post
-export const createPost = async (postBody: Post, user: any) => {
+export const createPost = async (postBody: Post, user: any, postFile: any) => {
   const { title, content } = postBody;
+
+  const serverURL =
+    process.env.NODE_ENV === "production"
+      ? process.env.SERVER_URL_PRODUCTION
+      : process.env.ERVER_URL_DEVELOPMENT;
+
   const postRecord = getRepository(Post).create({
     title,
     content,
     user: user.id,
+    postImg: `${serverURL}/uploads/${postFile["filename"]}`,
   });
   const result = await getRepository(Post).save(postRecord);
   return result;
