@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["es5", "es6"],
     "baseUrl": "./",
-    "outDir": "build",
+    "outDir": "./build",
     "noEmit": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

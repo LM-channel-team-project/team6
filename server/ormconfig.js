@@ -1,3 +1,8 @@
+import path from "path";
+
+const env = process.env.NODE_ENV === "production" ? "build" : "src";
+const dir = path.join(__dirname, env);
+
 export default {
   type: process.env.DB_TYPE,
   host: process.env.DB_HOST,
@@ -7,12 +12,12 @@ export default {
   database: process.env.DB_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [__dirname + `/build/models/entity/**/*`],
-  migrations: [__dirname + `/build/models/migration/**/*`],
-  subscribers: [__dirname + `/build/models/subscriber/**/*`],
+  entities: [`${dir}/models/entity/**/*`],
+  migrations: [`${dir}/models/migration/**/*`],
+  subscribers: [`${dir}/models/subscriber/**/*`],
   cli: {
-    entitiesDir: `build/models/entity`,
-    migrationsDir: `build/models/migration`,
-    subscribersDir: `build/models/subscriber`,
+    entitiesDir: `${dir}/models/entity`,
+    migrationsDir: `${dir}/models/migration`,
+    subscribersDir: `${dir}/models/subscriber`,
   },
 };

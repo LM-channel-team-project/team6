@@ -63,17 +63,10 @@
     "prebuild": "tsc -b --clean",
     "build": "tsc",
     "docs": "swagger-cli bundle ./src/utils/swagger/swagger.yaml --outfile build/swagger.yaml --type yaml",
-    "start:dev": "yarn build && yarn docs && cross-env NODE_ENV=development nodemon --exec ts-node src/app.ts",
-    "start:prod": "yarn build && yarn docs && cross-env NODE_ENV=production ts-node build/app.js",
+    "dev": "yarn docs && cross-env NODE_ENV=development nodemon --exec ts-node src/app.ts",
+    "prestart": "yarn build",
+    "start": "yarn docs && cross-env NODE_ENV=production ts-node build/app.js",
     "test": "cross-env NODE_ENV=test && jest --detectOpenHandles --forceExit"
-  },
-  "_moduleAliases": {
-    "@controllers": "build/controllers",
-    "@middlewares": "build/middlewares",
-    "@models": "build/models",
-    "@routes": "build/routes",
-    "@services": "build/services",
-    "@utils": "build/utils"
   },
   "jest": {
     "transform": {
