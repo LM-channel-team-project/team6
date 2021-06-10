@@ -108,7 +108,7 @@ export const findPost = async (postId: string) => {
 };
 
 // Create Post
-export const createPost = async (postBody: Post, user: any, postFile: any) => {
+export const createPost = async (postBody: Post, user: any, postFile?: any) => {
   const { title, content } = postBody;
 
   const serverURL =
@@ -120,7 +120,7 @@ export const createPost = async (postBody: Post, user: any, postFile: any) => {
     title,
     content,
     user: user.id,
-    postImg: `${serverURL}/uploads/${postFile["filename"]}`,
+    postImg: postFile && `${serverURL}/uploads/${postFile["filename"]}`,
   });
   const result = await getRepository(Post).save(postRecord);
   return result;

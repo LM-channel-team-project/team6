@@ -37,6 +37,11 @@ router.patch(
   PostController.clickLikePost,
 );
 
+router.get("/week", verificationUser, PostController.findPostsByWeek);
+router.get("/view", verificationUser, PostController.findPostsByView);
+router.get("/like", verificationUser, PostController.findPostsByLike);
+router.get("/latest", verificationUser, PostController.findPostsByLatest);
+
 router.patch(
   "/:id",
   [verificationUser, verifyPostOwner],
@@ -47,18 +52,14 @@ router.delete(
   [verificationUser, verifyPostOwner],
   PostController.deletePost,
 );
-router.get("/:id", verificationUser, PostController.findPost);
 router.post(
   "/",
   verificationUser,
   upload.single("postImg"),
   PostController.createPost,
 );
+router.get("/:id", verificationUser, PostController.findPost);
 
-router.get("/week", verificationUser, PostController.findPostsByWeek);
-router.get("/view", verificationUser, PostController.findPostsByView);
-router.get("/like", verificationUser, PostController.findPostsByLike);
-router.get("/latest", verificationUser, PostController.findPostsByLatest);
 router.get("/", verificationUser, PostController.findPosts);
 
 export default router;

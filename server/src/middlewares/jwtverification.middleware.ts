@@ -17,7 +17,12 @@ const verificationUser = async (
     next(error);
   } else {
     try {
-      const token = authorization;
+      let token = authorization;
+
+      if (token.includes("Bearer ")) {
+        token = token.slice(7, token.length);
+      }
+
       const { id, nickname, username, email, oauthId, provider }: any =
         await verifyToken(token);
       const user = await findUser(id);

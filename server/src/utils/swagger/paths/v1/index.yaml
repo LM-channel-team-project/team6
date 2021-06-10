@@ -16,5 +16,14 @@
 # post
 /v1/post:
   $ref: "./post/post.yaml"
+/v1/post/week:
+  $ref: "./post/post-week.yaml"
+/v1/post/view:
+  $ref: "./post/post-view.yaml"
+/v1/post/like:
+  $ref: "./post/post-like.yaml"
+/v1/post/latest:
+  $ref: "./post/post-latest.yaml"
+
 /v1/post/{id}:
   $ref: "./post/post-id.yaml"
