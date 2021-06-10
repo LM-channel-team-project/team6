@@ -26,6 +26,9 @@ export class Post {
   @CreateDateColumn({ type: "datetime" })
   createdAt: Date;
 
+  @Column({ length: 50, default: null })
+  postImg: string;
+
   @Column({ default: 0 })
   likes: number;
 
