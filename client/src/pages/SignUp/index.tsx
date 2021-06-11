@@ -1,11 +1,11 @@
 import React from 'react';
-import SignTemplate from 'components/templates/SignTemplate';
+import SignUpOrg from 'components/organisms/SignUpOrg';
 import * as S from './style';
 
 export default function SignUp(): JSX.Element {
   return (
     <S.Container>
-      <SignTemplate />
+      <SignUpOrg />
     </S.Container>
   );
 }

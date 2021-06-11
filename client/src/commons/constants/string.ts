@@ -2,7 +2,7 @@
 export const HOME_URL = '/';
 export const SIGN_UP_URL = '/signup';
 export const LOGIN_URL = '/login';
-export const LOGIN_EMAIL_URL = '/login-email';
+export const LOGIN_EMAIL_URL = '/login/email';
 export const TEAM_GITHUB_URL =
   'https://github.com/LM-channel-team-project/team6';
 

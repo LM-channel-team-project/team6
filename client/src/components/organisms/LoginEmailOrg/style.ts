@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Base = styled.div`
+  position: relative;
+`;
+
 export const Container = styled.div`
   background-color: #f8fafb;
   width: 448px;
@@ -9,4 +13,12 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 1000;
+`;
+
+export const Img = styled.img`
+  position: absolute;
+  right: 20px;
+  top: -71px;
 `;
