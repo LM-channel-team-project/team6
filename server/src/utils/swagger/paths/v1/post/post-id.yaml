@@ -1,4 +1,6 @@
 get:
+  security:
+    - bearerAuth: []
   summary: "특정 글 조회"
   tags:
     - Post
@@ -32,6 +34,8 @@ get:
     600:
       $ref: "../../../swagger.yaml#/components/responses/DBError"
 patch:
+  security:
+    - bearerAuth: []
   summary: "글 수정하기"
   tags:
     - Post
@@ -66,6 +70,8 @@ patch:
     400:
       $ref: "../../../swagger.yaml#/components/responses/BadRequest"
 delete:
+  security:
+    - bearerAuth: []
   summary: "글 삭제"
   tags:
     - Post

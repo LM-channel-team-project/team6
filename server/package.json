@@ -16,6 +16,7 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
@@ -40,6 +41,7 @@
     "@types/jest": "^26.0.22",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/morgan": "^1.9.2",
+    "@types/multer": "^1.4.5",
     "@types/node": "^8.0.29",
     "@types/passport": "^1.0.6",
     "@types/passport-github": "^1.1.5",
@@ -61,17 +63,10 @@
     "prebuild": "tsc -b --clean",
     "build": "tsc",
     "docs": "swagger-cli bundle ./src/utils/swagger/swagger.yaml --outfile build/swagger.yaml --type yaml",
-    "start:dev": "yarn build && yarn docs && cross-env NODE_ENV=development nodemon --exec ts-node src/app.ts",
-    "start:prod": "yarn build && yarn docs && cross-env NODE_ENV=production ts-node build/app.js",
+    "dev": "yarn docs && cross-env NODE_ENV=development nodemon --exec ts-node src/app.ts",
+    "prestart": "yarn build",
+    "start": "yarn docs && cross-env NODE_ENV=production ts-node build/app.js",
     "test": "cross-env NODE_ENV=test && jest --detectOpenHandles --forceExit"
-  },
-  "_moduleAliases": {
-    "@controllers": "build/controllers",
-    "@middlewares": "build/middlewares",
-    "@models": "build/models",
-    "@routes": "build/routes",
-    "@services": "build/services",
-    "@utils": "build/utils"
   },
   "jest": {
     "transform": {

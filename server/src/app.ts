@@ -1,4 +1,14 @@
-import "module-alias/register";
+import moduleAlias from "module-alias";
+
+moduleAlias.addAliases({
+  "@controllers": `${__dirname}/controllers`,
+  "@middlewares": `${__dirname}/middlewares`,
+  "@models": `${__dirname}/models`,
+  "@routes": `${__dirname}/routes`,
+  "@utils": `${__dirname}/utils`,
+  "@services": `${__dirname}/services`,
+});
+
 import "reflect-metadata";
 import dotenv from "dotenv";
 

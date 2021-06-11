@@ -19,6 +19,70 @@ export const findPosts = async (
   }
 };
 
+export const findPostsByWeek = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await PostService.findPostsByWeek(req.query);
+    if (!result) {
+      throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+    }
+    res.status(200).json(resJSON(true, resMSG.POST_FIND_ALL_SUCCESS, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const findPostsByView = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await PostService.findPostsByView(req.query);
+    if (!result) {
+      throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+    }
+    res.status(200).json(resJSON(true, resMSG.POST_FIND_ALL_SUCCESS, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const findPostsByLike = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await PostService.findPostsByLike(req.query);
+    if (!result) {
+      throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+    }
+    res.status(200).json(resJSON(true, resMSG.POST_FIND_ALL_SUCCESS, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const findPostsByLatest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await PostService.findPostsByLatest(req.query);
+    if (!result) {
+      throw new resError(400, resMSG.POST_FIND_ALL_FAIL);
+    }
+    res.status(200).json(resJSON(true, resMSG.POST_FIND_ALL_SUCCESS, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
 // findOne Post
 export const findPost = async (
   req: Request,
@@ -43,7 +107,7 @@ export const createPost = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await PostService.createPost(req.body, req.user);
+    const result = await PostService.createPost(req.body, req.user, req.file);
     if (!result) {
       throw new resError(400, resMSG.POST_CREATE_FAIL);
     }
