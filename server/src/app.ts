@@ -26,6 +26,7 @@ import { createConnection, getConnection } from "typeorm";
 import swaggerUi from "swagger-ui-express";
 import Yaml from "yamljs";
 
+import corsChecker from "@middlewares/corsChecker";
 import { stream } from "@utils/winston";
 import router from "@routes/index";
 import passportConfig from "@utils/passport.config";
@@ -64,6 +65,8 @@ app.use(
       process.env.NODE_ENV === "production"
         ? process.env.CLIENT_URL_PRODUCTION
         : process.env.CLIENT_URL_DEVELOPMENT,
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    credentials: true,
   }),
 );
 
@@ -71,7 +74,7 @@ app.use(
 passportConfig();
 
 // router settings
-app.use("/api/v1", router); // v1
+app.use("/api/v1", cors(corsChecker), router); // v1
 app.use("/api-docs/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // error handlers
