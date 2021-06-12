@@ -34,14 +34,17 @@ export default function LoginEmailBody(): JSX.Element {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axios({
-      method: 'post',
-      url: LOCAL_LOGIN_POST_API,
-      data: {
-        email,
-        password,
-      },
-    })
+    axios
+      .post(
+        `${LOCAL_LOGIN_POST_API}`,
+        {
+          data: {
+            email,
+            password,
+          },
+        },
+        { withCredentials: true },
+      )
       .then((res) => {
         alert(`${res.status}: 로그인 성공`); // eslint-disable-line no-alert
       })

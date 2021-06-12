@@ -24,9 +24,9 @@ function App(): JSX.Element {
         <Router>
           <Switch>
             <Route exact path={HOME_URL} component={Main} />
-            <Route path={LOGIN_URL} component={Login} />
-            <Route path={LOGIN_EMAIL_URL} component={LoginEmail} />
-            <Route path={SIGN_UP_URL} component={SignUp} />
+            <Route exact path={LOGIN_URL} component={Login} />
+            <Route exact path={LOGIN_EMAIL_URL} component={LoginEmail} />
+            <Route exact path={SIGN_UP_URL} component={SignUp} />
             <Route path="/detail/:id" component={Detail} />
             <Route component={NotFound} />
           </Switch>
