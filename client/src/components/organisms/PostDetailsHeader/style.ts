@@ -8,8 +8,11 @@ export const Container = styled.div<Props>`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  height: 314px;
-  background: ${({ backImg }) => `url(${backImg})`};
+  height: 339px;
+  background-image: ${({ backImg }) => `url(${backImg})`};
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
 `;
 
 export const TitleBox = styled.div`
