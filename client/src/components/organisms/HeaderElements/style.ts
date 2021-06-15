@@ -23,6 +23,7 @@ export const HamburgurMenuWrapper = styled.div`
 
 export const DropDownWrapper = styled.div`
   position: absolute;
+  z-index: 1;
   top: 100%;
 `;
 
