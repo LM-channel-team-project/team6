@@ -35,16 +35,12 @@ export default function LoginEmailBody(): JSX.Element {
     e.preventDefault();
 
     axios
-      .post(
-        `${LOCAL_LOGIN_POST_API}`,
-        {
-          data: {
-            email,
-            password,
-          },
+      .post(`${LOCAL_LOGIN_POST_API}`, {
+        data: {
+          email,
+          password,
         },
-        { withCredentials: true },
-      )
+      })
       .then((res) => {
         alert(`${res.status}: 로그인 성공`); // eslint-disable-line no-alert
       })
