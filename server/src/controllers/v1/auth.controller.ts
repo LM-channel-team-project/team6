@@ -115,21 +115,16 @@ export const authGithubLogin = async (
   res: Response,
   next: NextFunction,
 ) => {
-  passport.authenticate(
-    "github",
-    { session: false },
-    async (err: any, user: any) => {
-      if (err || !user) {
-        const error = new resError(400, resMSG.AUTH_LOGIN_FAIL, err);
-        next(error);
-      }
-      const token = await createToken(user);
+  const user: any = req.query.code;
 
-      return res
-        .status(200)
-        .json(resJSON(true, resMSG.AUTH_LOGIN_SUCCESS, token));
-    },
-  )(req, res);
+  if (!user) {
+    const error = new resError(400, resMSG.AUTH_LOGIN_FAIL);
+    next(error);
+  }
+
+  const token = await createToken(user);
+
+  res.status(200).json(resJSON(true, resMSG.AUTH_LOGIN_SUCCESS, token));
 };
 
 export const authKakaoLogin = async (
@@ -137,21 +132,16 @@ export const authKakaoLogin = async (
   res: Response,
   next: NextFunction,
 ) => {
-  passport.authenticate(
-    "kakao",
-    { session: false },
-    async (err: any, user: any) => {
-      if (err || !user) {
-        const error = new resError(400, resMSG.AUTH_LOGIN_FAIL, err);
-        next(error);
-      }
-      const token = await createToken(user);
+  const user: any = req.query.code;
 
-      return res
-        .status(200)
-        .json(resJSON(true, resMSG.AUTH_LOGIN_SUCCESS, token));
-    },
-  )(req, res);
+  if (!user) {
+    const error = new resError(400, resMSG.AUTH_LOGIN_FAIL);
+    next(error);
+  }
+
+  const token = await createToken(user);
+
+  res.status(200).json(resJSON(true, resMSG.AUTH_LOGIN_SUCCESS, token));
 };
 
 export const authLocalLogin = async (
@@ -159,19 +149,13 @@ export const authLocalLogin = async (
   res: Response,
   next: NextFunction,
 ) => {
-  passport.authenticate(
-    "local",
-    { session: false },
-    async (err: any, user: any) => {
-      if (err || !user) {
-        const error = new resError(400, resMSG.AUTH_LOGIN_FAIL, err);
-        next(error);
-      }
-      const token = await createToken(user);
+  const user = req.body;
 
-      return res
-        .status(200)
-        .json(resJSON(true, resMSG.AUTH_LOGIN_SUCCESS, token));
-    },
-  )(req, res);
+  if (!user) {
+    const error = new resError(400, resMSG.AUTH_LOGIN_FAIL);
+    next(error);
+  }
+
+  const token = await createToken(user);
+  res.status(200).json(resJSON(true, resMSG.AUTH_LOGIN_SUCCESS, token));
 };

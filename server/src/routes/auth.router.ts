@@ -23,7 +23,11 @@ router.get("/oauth/github/callback", AuthController.authGithubLogin);
 // - Login, SignUp, Logout
 router.get("/logout", verificationUser, AuthController.authLogout);
 router.post("/signin", AuthController.authLocalLogin);
-router.post("/signup", AuthController.authCreateUser);
+router.post(
+  "/signup",
+  passport.authenticate("local", { session: false }),
+  AuthController.authCreateUser,
+);
 
 // - User Update, User Delete, Find One User
 router.get("/:id", verificationUser, AuthController.authFindOne);
